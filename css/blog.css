@@ -1,0 +1,13 @@
+h1 {
+  padding: 5px;
+  background-color: #d5d5eb;
+  box-shadow: 10px 10px 5px rgb(82, 82, 82);
+}
+.blog {
+  border: 4px solid rgb(0, 0, 0);
+}
+.article {
+  background-color: rgb(216, 240, 82);
+  padding: 10px;
+  border-bottom: 2px dashed rgb(6, 5, 7);
+}

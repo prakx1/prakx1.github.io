@@ -2,7 +2,7 @@ title: NotePad
 description: My writings.
 author: Prakash Singh
 github: https://github.com/prakx1
-about: Software Engineer.
+about: Software Engineer
 disqus_shortname: prakx1
 google_analytics: UA-XXXXXXXX-Y
 
@@ -38,7 +38,7 @@ urls:
     - text: XML Feed
       url: /feed.xml
 
-url: "https://agusmakmun.github.io"
+url: "https://prakx1.github.io"
 baseurl: ""
 paginate: 20
 per_page: 20

@@ -1,3 +1,9 @@
+---
+layout: post
+title:  "Understanding the Pipeline Design Pattern"
+date:   2023-5-27 11:30:00 +0700
+categories: [design,parallel processing]
+---
 
 # Understanding the Pipeline Design Pattern
 

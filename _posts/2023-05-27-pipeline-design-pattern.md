@@ -11,7 +11,7 @@ The Pipeline Design Pattern is a way to solve problems by breaking them down int
 
 ## The Concept
 
-Think of an assembly line where the goal is to manufacture a number of cars. The manufacture of each car can be separated into a sequence of smaller operations (e.g., installing a windshield), with each operation assigned to a different worker. As the car-to-be moves down the assembly line, it is built up by performing the sequence of operations; each worker, however, performs the same operation over and over on a succession of cars​
+Think of an assembly line where the goal is to manufacture a number of cars. The manufacture of each car can be separated into a sequence of smaller operations (e.g., installing a windshield), with each operation assigned to a different worker. As the car-to-be moves down the assembly line,it is built up by performing the sequence of operations; each worker, however, performs the same operation over and over on a succession of cars​
 
 
 The Pipeline Design Pattern involves breaking down a series of computations into distinct stages. Each stage performs a part of the computation, then passes it to the next stage while starting on the next computation. This allows multiple stages to be processed at the same time, improving efficiency.

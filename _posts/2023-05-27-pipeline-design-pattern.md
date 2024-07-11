@@ -34,5 +34,4 @@ Consider a situation where we need to scrape data from 100 different domains. If
 
 Let's take the first batch, B1, as an example. B1 starts at STAGE1, where it undergoes scrapping. Once B1 completes STAGE1, it moves on to STAGE2 for cleaning while the next batch, B2, enters STAGE1 for scrapping. This creates a pipeline where, after the initial setup, each stage is continuously processing a batch. 
 
-Except for the first and last batches, there will always be one batch at each stage of the pipeline at any given time. This ensures a continuous flow of processing, making our system more efficient."
-
+Except for the first and last batches, there will always be one batch at each stage of the pipeline at any given time. This ensures a continuous flow of processing, making our system more efficient.

@@ -110,26 +110,23 @@ layout: compress
       </script>
     {% endif %}
   </head>
-  <body data-theme="cyber">
-    <div class="site-frame">
-      <header class="site-topbar">
+  <body>
+    <div class="app-shell">
+      <header class="command-bar">
         <a class="brand-mark" href="/">{{ site.title }}</a>
+        <div class="command-pill">Session: personal-site</div>
         <nav class="quick-nav">
           <a href="/">Home</a>
           <a href="/about/">About</a>
           <a href="/projects/">Projects</a>
-          <a href="/feed.xml">RSS</a>
+          <a href="/feed.xml">Feed</a>
         </nav>
-        <div class="theme-switcher">
-          <button type="button" class="theme-btn" data-theme="cyber">Cyber</button>
-          <button type="button" class="theme-btn" data-theme="swiss">Swiss</button>
-          <button type="button" class="theme-btn" data-theme="retro">Retro</button>
-        </div>
       </header>
 
-      <div class="site-shell">
-        <aside class="site-rail">
-          <section class="rail-card">
+      <div class="workspace-grid">
+        <aside class="context-rail">
+          <section class="rail-block">
+            <strong>Operator</strong>
             <h1 class="author-name"><a href="/">{{ site.author }}</a></h1>
             {% if site.about %}
               <div class="profile-about">{{ site.about }}</div>
@@ -145,16 +142,8 @@ layout: compress
             </div>
           </section>
 
-          <section class="rail-card">
-            <strong>Search</strong>
-            <div class="search" id="js-search">
-              <input type="text" placeholder="type to search..." class="search__input form-control" id="js-search__input">
-              <ul class="search__results" id="js-search__results"></ul>
-            </div>
-          </section>
-
-          <section class="rail-card">
-            <strong>Navigation</strong>
+          <section class="rail-block">
+            <strong>Jump To</strong>
             <ul class="sidebar-nav">
               <li><a href="/">Home</a></li>
               {% for i in site.urls %}
@@ -162,15 +151,24 @@ layout: compress
               {% endfor %}
             </ul>
           </section>
+
+          <section class="rail-block">
+            <strong>Search Index</strong>
+            <div class="search" id="js-search">
+              <input type="text" placeholder="find note, topic, keyword..." class="search__input form-control" id="js-search__input">
+              <ul class="search__results" id="js-search__results"></ul>
+            </div>
+          </section>
         </aside>
 
-        <main class="main-layout">
+        <main class="generation-canvas">
           {{ content }}
           <footer>
             &copy; {{ site.author }}
             {% if site.github %}
-              - <a href="{{ site.github }}">{{ site.github }}</a> - Powered by Jekyll.
+              - <a href="{{ site.github }}">{{ site.github }}</a>
             {% endif %}
+            - Powered by Jekyll.
           </footer>
         </main>
       </div>
@@ -184,29 +182,5 @@ layout: compress
     <script src="/static/js/super-search.js"></script>
     <script src="/static/js/thickbox-compressed.js"></script>
     <script src="/static/js/projects.js"></script>
-    <script>
-      (function() {
-        var key = "theme_choice";
-        var themes = ["cyber", "swiss", "retro"];
-        var saved = localStorage.getItem(key);
-        var theme = themes.indexOf(saved) > -1 ? saved : "cyber";
-        document.body.setAttribute("data-theme", theme);
-        var buttons = document.querySelectorAll(".theme-btn");
-        for (var i = 0; i < buttons.length; i++) {
-          if (buttons[i].getAttribute("data-theme") === theme) {
-            buttons[i].classList.add("active");
-          }
-          buttons[i].addEventListener("click", function() {
-            var selected = this.getAttribute("data-theme");
-            document.body.setAttribute("data-theme", selected);
-            localStorage.setItem(key, selected);
-            for (var j = 0; j < buttons.length; j++) {
-              buttons[j].classList.remove("active");
-            }
-            this.classList.add("active");
-          });
-        }
-      })();
-    </script>
   </body>
 </html>

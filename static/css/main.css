@@ -1,15 +1,16 @@
 :root {
-  --bg: #070b12;
-  --bg-grid: rgba(148, 163, 184, 0.12);
-  --panel: #0f1724;
-  --panel-soft: #151e31;
-  --rail: #0c1423;
-  --line: #22324b;
-  --text: #e9f1ff;
-  --text-soft: #9fb3d8;
-  --accent: #6ee7ff;
-  --accent-2: #7c8cff;
+  --bg: #070c14;
+  --bg-grid: rgba(90, 108, 140, 0.14);
+  --panel: #0f1828;
+  --panel-soft: #15233a;
+  --rail: #0c1628;
+  --line: #243551;
+  --text: #eaf2ff;
+  --text-soft: #9eb5de;
+  --accent: #70e2ff;
+  --accent-strong: #97e8ff;
   --ok: #4ade80;
+  --warn: #fbbf24;
   --title-font: "Sora", "Segoe UI", sans-serif;
   --body-font: "Manrope", "Segoe UI", sans-serif;
   --mono-font: "IBM Plex Mono", monospace;
@@ -25,8 +26,8 @@ body {
   background:
     linear-gradient(to right, transparent 0, transparent 39px, var(--bg-grid) 40px, transparent 41px),
     linear-gradient(to bottom, transparent 0, transparent 39px, var(--bg-grid) 40px, transparent 41px),
-    radial-gradient(circle at 0% 0%, rgba(124, 140, 255, 0.12), transparent 24%),
-    radial-gradient(circle at 100% 0%, rgba(110, 231, 255, 0.1), transparent 22%),
+    radial-gradient(circle at 0% 0%, rgba(108, 129, 255, 0.15), transparent 26%),
+    radial-gradient(circle at 100% 0%, rgba(112, 226, 255, 0.1), transparent 28%),
     var(--bg);
   background-size: 40px 40px, 40px 40px, auto, auto, auto;
   color: var(--text);
@@ -43,7 +44,7 @@ a:active {
 }
 
 a:hover {
-  color: #b6f4ff;
+  color: var(--accent-strong);
   text-decoration: underline;
 }
 
@@ -57,7 +58,7 @@ h4 {
 
 h1 {
   font-family: var(--title-font);
-  font-size: 2.4rem;
+  font-size: 2.45rem;
   letter-spacing: -0.03em;
   margin-bottom: 0.45rem;
 }
@@ -66,7 +67,7 @@ h2 {
   color: var(--text-soft);
   font-family: var(--mono-font);
   font-size: 0.78rem;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.09em;
   margin: 2rem 0 0.8rem;
   text-transform: uppercase;
 }
@@ -90,12 +91,12 @@ hr {
 
 .command-bar {
   align-items: center;
-  background: linear-gradient(120deg, rgba(17, 25, 40, 0.95), rgba(15, 23, 36, 0.92));
+  background: linear-gradient(120deg, rgba(17, 27, 43, 0.95), rgba(14, 22, 36, 0.92));
   border: 1px solid var(--line);
   border-radius: var(--radius);
   display: grid;
   gap: 10px;
-  grid-template-columns: auto auto 1fr;
+  grid-template-columns: auto auto 1fr auto;
   min-height: 66px;
   padding: 10px 14px;
 }
@@ -127,12 +128,12 @@ hr {
 }
 
 .quick-nav a {
-  background: rgba(21, 30, 49, 0.9);
+  background: rgba(21, 35, 58, 0.9);
   border: 1px solid transparent;
   border-radius: 8px;
   color: var(--text-soft);
   font-family: var(--mono-font);
-  font-size: 0.7rem;
+  font-size: 0.69rem;
   letter-spacing: 0.07em;
   padding: 5px 9px;
   text-transform: uppercase;
@@ -144,9 +145,26 @@ hr {
   text-decoration: none;
 }
 
+.palette-trigger {
+  background: rgba(112, 226, 255, 0.12);
+  border: 1px solid rgba(112, 226, 255, 0.4);
+  border-radius: 8px;
+  color: var(--text);
+  cursor: pointer;
+  font-family: var(--mono-font);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  padding: 6px 9px;
+  text-transform: uppercase;
+}
+
+.palette-trigger:hover {
+  background: rgba(112, 226, 255, 0.2);
+}
+
 .command-input {
   margin-top: 10px;
-  background: rgba(15, 23, 36, 0.85);
+  background: rgba(15, 23, 36, 0.86);
   border: 1px solid var(--line);
   border-radius: 10px;
   padding: 9px 12px;
@@ -155,6 +173,7 @@ hr {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-height: 42px;
 }
 
 .prompt {
@@ -164,22 +183,8 @@ hr {
 .typed-command {
   color: var(--text);
   border-right: 1px solid var(--accent);
-  white-space: nowrap;
-  overflow: hidden;
-  width: 0;
-  animation: typing 3.1s steps(45, end) forwards, blink 1s step-end infinite;
-}
-
-@keyframes typing {
-  to {
-    width: 41ch;
-  }
-}
-
-@keyframes blink {
-  50% {
-    border-color: transparent;
-  }
+  min-height: 1.2em;
+  padding-right: 2px;
 }
 
 .workspace-grid {
@@ -264,11 +269,12 @@ hr {
 }
 
 .generation-canvas {
-  background: linear-gradient(180deg, rgba(16, 24, 40, 0.97), rgba(15, 23, 36, 0.95));
+  background: linear-gradient(180deg, rgba(16, 24, 40, 0.97), rgba(14, 22, 35, 0.95));
   border: 1px solid var(--line);
   border-radius: var(--radius);
   min-height: calc(100vh - 138px);
   padding: 24px 26px 14px;
+  overflow: hidden;
 }
 
 .kicker {
@@ -342,7 +348,7 @@ hr {
 .signal-card {
   border: 1px solid var(--line);
   border-radius: 10px;
-  background: rgba(10, 16, 26, 0.5);
+  background: rgba(10, 16, 26, 0.52);
   padding: 9px;
 }
 
@@ -357,6 +363,48 @@ hr {
 .signal-card p {
   margin: 6px 0 0;
   font-size: 0.9rem;
+}
+
+.telemetry-stack {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.telemetry-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel-soft);
+  padding: 10px;
+  min-height: 220px;
+}
+
+.agent-feed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.agent-feed li {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(12, 21, 34, 0.7);
+  padding: 7px 8px;
+  font-family: var(--mono-font);
+  font-size: 0.72rem;
+  color: var(--text-soft);
+}
+
+#runtime-pulse {
+  width: 100%;
+  height: 170px;
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(10, 16, 26, 0.7);
 }
 
 .featured-grid {
@@ -383,7 +431,8 @@ hr {
 span.time,
 span.categories,
 .log-date,
-.log-status {
+.log-status,
+.log-metrics {
   color: var(--text-soft);
   font-family: var(--mono-font);
   font-size: 0.7rem;
@@ -404,17 +453,26 @@ span.categories,
   padding-left: 0;
 }
 
-.log-list li {
+.log-entry {
   align-items: center;
   border: 1px solid var(--line);
   border-radius: 10px;
   display: grid;
   gap: 8px;
-  grid-template-columns: 110px 1fr 62px;
+  grid-template-columns: 110px 1fr minmax(150px, 0.7fr) 62px;
   list-style: none;
   margin-bottom: 8px;
   padding: 8px 10px;
   background: rgba(15, 23, 36, 0.6);
+}
+
+.log-title {
+  color: var(--text);
+}
+
+.log-metrics {
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 .log-status {
@@ -503,6 +561,102 @@ footer {
   padding-top: 12px;
 }
 
+.palette-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 8, 14, 0.78);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 12vh;
+  z-index: 1000;
+}
+
+.palette-overlay.open {
+  display: flex;
+}
+
+.palette-panel {
+  width: min(740px, 94vw);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.palette-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono-font);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-soft);
+}
+
+.palette-head kbd {
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  padding: 2px 6px;
+  color: var(--text);
+  font-family: var(--mono-font);
+}
+
+#palette-input {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  color: var(--text);
+  padding: 12px;
+  font-family: var(--mono-font);
+  font-size: 0.86rem;
+}
+
+#palette-input:focus {
+  outline: none;
+}
+
+#palette-results {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  max-height: 50vh;
+  overflow: auto;
+}
+
+#palette-results li {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: var(--text-soft);
+  cursor: pointer;
+  font-family: var(--mono-font);
+  font-size: 0.76rem;
+  margin-bottom: 6px;
+  padding: 8px 9px;
+}
+
+#palette-results li:hover,
+#palette-results li.active {
+  border-color: var(--line);
+  background: var(--panel-soft);
+  color: var(--text);
+}
+
+body.zen-mode .context-rail {
+  display: none;
+}
+
+body.zen-mode .workspace-grid {
+  grid-template-columns: 1fr;
+}
+
 @media (max-width: 1080px) {
   .workspace-grid {
     grid-template-columns: 1fr;
@@ -510,7 +664,8 @@ footer {
 
   .stream-grid,
   .signal-grid,
-  .featured-grid {
+  .featured-grid,
+  .telemetry-stack {
     grid-template-columns: 1fr;
   }
 
@@ -535,18 +690,7 @@ footer {
     white-space: nowrap;
   }
 
-  .typed-command {
-    width: auto;
-    animation: none;
-    border-right: 0;
-    white-space: normal;
-  }
-
-  .generation-canvas {
-    padding: 18px 14px 12px;
-  }
-
-  .log-list li {
+  .log-entry {
     grid-template-columns: 1fr;
   }
 
@@ -554,7 +698,11 @@ footer {
     text-align: left;
   }
 
+  .generation-canvas {
+    padding: 18px 14px 12px;
+  }
+
   h1 {
-    font-size: 1.85rem;
+    font-size: 1.9rem;
   }
 }

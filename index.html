@@ -34,6 +34,17 @@ layout: default
     </article>
   </section>
 
+  <section class="telemetry-stack">
+    <article class="telemetry-card">
+      <h2>Agent Feed</h2>
+      <ul class="agent-feed" id="agent-feed"></ul>
+    </article>
+    <article class="telemetry-card">
+      <h2>Runtime Pulse</h2>
+      <canvas id="runtime-pulse" width="1000" height="210"></canvas>
+    </article>
+  </section>
+
   <section class="featured-posts">
     <h2>Recent Outputs</h2>
     <div class="featured-grid">
@@ -51,9 +62,10 @@ layout: default
     <h2>Execution Log</h2>
     <ol class="posts log-list">
       {% for post in paginator.posts %}
-        <li>
+        <li class="log-entry" data-post-title="{{ post.title | escape }}">
           <span class="log-date">{{ post.date | date: "%Y-%m-%d" }}</span>
-          <a href="{{ post.url }}">{{ post.title }}</a>
+          <a class="log-title" href="{{ post.url }}">{{ post.title }}</a>
+          <span class="log-metrics"></span>
           <span class="log-status">done</span>
         </li>
       {% endfor %}

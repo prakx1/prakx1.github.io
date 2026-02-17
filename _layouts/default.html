@@ -121,10 +121,11 @@ layout: compress
           <a href="/projects/">Projects</a>
           <a href="/feed.xml">Feed</a>
         </nav>
+        <button type="button" class="palette-trigger" id="palette-trigger">Cmd</button>
       </header>
       <div class="command-input">
         <span class="prompt">$</span>
-        <span class="typed-command">publish --notes --in-public --build-in-progress</span>
+        <span class="typed-command" id="typed-command"></span>
       </div>
 
       <div class="workspace-grid">
@@ -178,6 +179,17 @@ layout: compress
       </div>
     </div>
 
+    <div class="palette-overlay" id="command-palette" aria-hidden="true">
+      <div class="palette-panel">
+        <div class="palette-head">
+          <span>Command Palette</span>
+          <kbd>Esc</kbd>
+        </div>
+        <input type="text" id="palette-input" placeholder="Type a command..." autocomplete="off">
+        <ul id="palette-results"></ul>
+      </div>
+    </div>
+
     <!-- Bootstrap core JavaScript -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -186,5 +198,6 @@ layout: compress
     <script src="/static/js/super-search.js"></script>
     <script src="/static/js/thickbox-compressed.js"></script>
     <script src="/static/js/projects.js"></script>
+    <script src="/static/js/command-center-magic.js"></script>
   </body>
 </html>

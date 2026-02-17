@@ -614,6 +614,57 @@ a.chip-tag:hover {
   min-width: 0;
 }
 
+.post-view {
+  width: min(100%, 780px);
+  margin: 0 auto;
+}
+
+.post-header {
+  margin-bottom: 14px;
+}
+
+.post-header h1 {
+  margin-bottom: 10px;
+}
+
+.post-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.post-meta-row .note-meta {
+  margin: 0;
+}
+
+.post-links {
+  display: inline-flex;
+  gap: 12px;
+}
+
+.post-links a {
+  color: var(--muted);
+  font-family: var(--mono);
+  text-transform: uppercase;
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+}
+
+.post-links a:hover {
+  color: var(--accent);
+}
+
+.post-taxonomy {
+  margin-top: 0;
+}
+
+.post-content {
+  min-width: 0;
+}
+
 .prose {
   color: #d3e1f7;
 }
@@ -808,6 +859,13 @@ a.chip-tag:hover {
     white-space: nowrap;
     max-width: 100%;
     padding-bottom: 2px;
+  }
+
+  .post-meta-row,
+  .post-links {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
   }
 
   .hero-plane,

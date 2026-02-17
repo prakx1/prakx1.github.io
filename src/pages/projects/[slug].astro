@@ -19,7 +19,7 @@ const { Content } = await project.render();
 <BaseLayout title={project.data.title} activePath="/projects/">
   <article class="reading-shell">
     <header class="reading-header">
-      <p class="eyebrow">Project</p>
+      <p class="eyebrow">Project note</p>
       <h1>{project.data.title}</h1>
     </header>
 
@@ -27,14 +27,14 @@ const { Content } = await project.render();
       <aside class="reading-rail">
         {project.data.date && (
           <>
-            <p class="note-meta">Timeline</p>
+            <p class="note-meta">Date</p>
             <p>{project.data.date}</p>
           </>
         )}
 
         {(project.data.tags ?? []).length > 0 && (
           <>
-            <p class="note-meta">Stack</p>
+            <p class="note-meta">Tech stack</p>
             <div class="chip-row">
               {(project.data.tags ?? []).map((tag) => (
                 <span class="chip">{tag}</span>
@@ -43,11 +43,11 @@ const { Content } = await project.render();
           </>
         )}
 
-        <p class="note-meta">Navigate</p>
+        <p class="note-meta">Links</p>
         <div class="rail-links">
           <a href="/projects/">All projects</a>
           {project.data.externalUrl && (
-            <a href={project.data.externalUrl} target="_blank" rel="noopener noreferrer">Live project</a>
+            <a href={project.data.externalUrl} target="_blank" rel="noopener noreferrer">Open live project</a>
           )}
         </div>
       </aside>

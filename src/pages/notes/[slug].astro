@@ -2,7 +2,7 @@
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { categoryToSlug, formatDate } from "../../lib/content";
+import { categoryToSlug, formatDate, tagToSlug } from "../../lib/content";
 
 export async function getStaticPaths() {
   const notes = await getCollection("blog", ({ data }) => !data.draft);
@@ -27,8 +27,10 @@ const older = currentIndex >= 0 && currentIndex < allNotes.length - 1 ? allNotes
 const related = allNotes
   .filter(
     (item) =>
-      item.slug !== note.slug &&
-      item.data.categories.some((category) => note.data.categories.includes(category))
+      item.slug !== note.slug && (
+        item.data.categories.some((category) => note.data.categories.includes(category)) ||
+        item.data.tags.some((tag) => note.data.tags.includes(tag))
+      )
   )
   .slice(0, 3);
 ---
@@ -36,25 +38,36 @@ const related = allNotes
 <BaseLayout title={note.data.title} description={note.data.description} activePath="/">
   <article class="reading-shell">
     <header class="reading-header">
-      <p class="eyebrow">Note</p>
+      <p class="eyebrow">Field note</p>
       <h1>{note.data.title}</h1>
     </header>
 
     <div class="reading-grid">
       <aside class="reading-rail">
-        <p class="note-meta">Published</p>
+        <p class="note-meta">Published on</p>
         <p>{formatDate(note.data.date)}</p>
 
-        <p class="note-meta">Categories</p>
+        <p class="note-meta">Topics</p>
         <div class="chip-row">
           {note.data.categories.map((category) => (
             <a class="chip" href={`/category/${categoryToSlug(category)}/`}>{category}</a>
           ))}
         </div>
 
-        <p class="note-meta">Navigate</p>
+        {note.data.tags.length > 0 && (
+          <>
+            <p class="note-meta">Tags</p>
+            <div class="chip-row chip-row-secondary">
+              {note.data.tags.map((tag) => (
+                <a class="chip chip-tag" href={`/tag/${tagToSlug(tag)}/`}>#{tag}</a>
+              ))}
+            </div>
+          </>
+        )}
+
+        <p class="note-meta">Shortcuts</p>
         <div class="rail-links">
-          <a href="/">All notes</a>
+          <a href="/">Back to notes</a>
           <a href="/projects/">Projects</a>
         </div>
       </aside>

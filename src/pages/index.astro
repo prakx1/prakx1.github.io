@@ -1,49 +1,50 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { buildExcerpt, categoryToSlug, formatDate } from "../lib/content";
+import { buildExcerpt, categoryToSlug, formatDate, tagToSlug } from "../lib/content";
 
 const notes = (await getCollection("blog", ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime()
 );
 
 const categories = [...new Set(notes.flatMap((note) => note.data.categories))];
+const tags = [...new Set(notes.flatMap((note) => note.data.tags ?? []))];
 const latest = notes[0];
 ---
 
 <BaseLayout activePath="/">
   <section class="hero-plane">
-    <p class="eyebrow">Personal engineering log</p>
-    <h1>Build. Break. Learn. Write.</h1>
+    <p class="eyebrow">Personal engineering notebook</p>
+    <h1>Hard-earned backend lessons, written in public.</h1>
     <p class="hero-copy">
-      I am writing in public again. These notes capture architecture decisions,
-      hard bugs, and system design lessons while they are still fresh.
+      I use this space to capture decisions, tradeoffs, and tricky fixes from real work.
+      The goal is simple: notes that are useful to my future self and useful to others.
     </p>
 
     <div class="hero-actions">
-      {latest && <a class="button-main" href={`/notes/${latest.slug}/`}>Read latest note</a>}
-      <a class="button-subtle" href="/projects/">See projects</a>
+      {latest && <a class="button-main" href={`/notes/${latest.slug}/`}>Start with latest note</a>}
+      <a class="button-subtle" href="/projects/">Browse projects</a>
     </div>
 
     <dl class="hero-stats">
       <div>
         <dt>{notes.length}</dt>
-        <dd>Published notes</dd>
+        <dd>Notes</dd>
       </div>
       <div>
-        <dt>{categories.length}</dt>
-        <dd>Active topics</dd>
+        <dt>{tags.length || categories.length}</dt>
+        <dd>Tags in use</dd>
       </div>
       <div>
         <dt>{latest ? formatDate(latest.data.date) : "Soon"}</dt>
-        <dd>Latest update</dd>
+        <dd>Last publish</dd>
       </div>
     </dl>
   </section>
 
   <section class="stream-header">
-    <h2>Latest Notes</h2>
-    <a href="/feed.xml">Subscribe via RSS</a>
+    <h2>Recent Entries</h2>
+    <a href="/feed.xml">RSS feed</a>
   </section>
 
   <section class="note-stream" aria-label="Blog notes">
@@ -62,6 +63,15 @@ const latest = notes[0];
               </a>
             ))}
           </div>
+          {note.data.tags.length > 0 && (
+            <div class="chip-row chip-row-secondary">
+              {note.data.tags.slice(0, 4).map((tag) => (
+                <a class="chip chip-tag" href={`/tag/${tagToSlug(tag)}/`}>
+                  #{tag}
+                </a>
+              ))}
+            </div>
+          )}
         </div>
       </article>
     ))}

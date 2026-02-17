@@ -491,6 +491,10 @@ p {
   margin-top: 8px;
 }
 
+.chip-row-secondary {
+  margin-top: 6px;
+}
+
 .chip {
   border: 1px solid rgba(143, 172, 214, 0.34);
   border-radius: 999px;
@@ -506,6 +510,17 @@ p {
 a.chip:hover {
   border-color: var(--accent);
   color: var(--accent);
+}
+
+.chip-tag {
+  border-color: rgba(110, 240, 214, 0.34);
+  color: #b6f2e6;
+  background: rgba(9, 39, 41, 0.78);
+}
+
+a.chip-tag:hover {
+  border-color: #8cf8e3;
+  color: #8cf8e3;
 }
 
 .about-layout {

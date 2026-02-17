@@ -1,5 +1,5 @@
-export function categoryToSlug(category: string): string {
-  return category
+export function toSlug(value: string): string {
+  return value
     .toLowerCase()
     .trim()
     .replace(/[^a-z0-9\s-]/g, "")
@@ -7,12 +7,24 @@ export function categoryToSlug(category: string): string {
     .replace(/-+/g, "-");
 }
 
-export function slugToCategoryLabel(slug: string): string {
+export function categoryToSlug(category: string): string {
+  return toSlug(category);
+}
+
+export function tagToSlug(tag: string): string {
+  return toSlug(tag);
+}
+
+export function slugToLabel(slug: string): string {
   return slug
     .split("-")
     .filter(Boolean)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
+}
+
+export function slugToCategoryLabel(slug: string): string {
+  return slugToLabel(slug);
 }
 
 export function formatDate(date: Date): string {

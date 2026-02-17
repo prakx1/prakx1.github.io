@@ -2,7 +2,7 @@
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { buildExcerpt, categoryToSlug, formatDate, slugToCategoryLabel } from "../../lib/content";
+import { buildExcerpt, formatDate, slugToLabel, tagToSlug } from "../../lib/content";
 
 interface Props {
   notes: CollectionEntry<"blog">[];
@@ -14,13 +14,13 @@ export async function getStaticPaths() {
   const map = new Map<string, { label: string; notes: CollectionEntry<"blog">[] }>();
 
   for (const note of notes) {
-    for (const category of note.data.categories) {
-      const slug = categoryToSlug(category);
+    for (const tag of note.data.tags) {
+      const slug = tagToSlug(tag);
       const existing = map.get(slug);
       if (existing) {
         existing.notes.push(note);
       } else {
-        map.set(slug, { label: category, notes: [note] });
+        map.set(slug, { label: tag, notes: [note] });
       }
     }
   }
@@ -35,15 +35,15 @@ export async function getStaticPaths() {
 }
 
 const { notes, label } = Astro.props as Props;
-const heading = label || slugToCategoryLabel(Astro.params.slug ?? "");
+const heading = label || slugToLabel(Astro.params.slug ?? "");
 const noteLabel = notes.length === 1 ? "note" : "notes";
 ---
 
-<BaseLayout title={`Category: ${heading}`} activePath="/">
+<BaseLayout title={`Tag: ${heading}`} activePath="/">
   <section class="hero-plane hero-compact">
-    <p class="eyebrow">Topic</p>
-    <h1>{heading}</h1>
-    <p class="hero-copy">{notes.length} {noteLabel} tagged with {heading}.</p>
+    <p class="eyebrow">Tag</p>
+    <h1>#{heading}</h1>
+    <p class="hero-copy">{notes.length} {noteLabel} tagged with #{heading}.</p>
   </section>
 
   <section class="note-stream">

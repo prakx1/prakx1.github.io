@@ -1,14 +1,19 @@
 ---
 title: "Add reCAPTCHA to default Django admin login form"
+description: "Add reCAPTCHA protection to Django admin login to reduce brute-force attempts."
 date: 2021-10-06T20:41:00+07:00
 categories:
   - python
   - django
   - security
+tags:
+  - django-admin
+  - authentication
+  - recaptcha
 ---
 
-Previously make sure you already install the [`django-recaptcha`](https://pypi.org/project/django-recaptcha/),
-don't miss also to [sign up for reCAPTCHA](https://www.google.com/recaptcha/about/).
+Before starting, install [`django-recaptcha`](https://pypi.org/project/django-recaptcha/) and
+[create reCAPTCHA keys](https://www.google.com/recaptcha/about/).
 
 ```bash
 pip install django-recaptcha
@@ -31,7 +36,7 @@ RECAPTCHA_PUBLIC_KEY = 'MyRecaptchaKey123'
 RECAPTCHA_PRIVATE_KEY = 'MyRecaptchaPrivateKey456'
 ```
 
-Then modify the default authentication form and add a new captcha field in `myapp/forms.py`:
+Then extend the default authentication form and add a captcha field in `myapp/forms.py`:
 
 ```python
 from django.conf import settings
@@ -62,8 +67,8 @@ from django.urls import include, path
 
 from myapp.forms import AuthAdminForm
 
-# modify the default admin login form
-# with add reCAPTCHA feature to fix bruteforce issue.
+# Override the default admin login form
+# and add reCAPTCHA to reduce brute-force attempts.
 admin.autodiscover()
 admin.site.login_form = AuthAdminForm
 admin.site.login_template = 'account/admin/login.html'
@@ -74,4 +79,4 @@ urlpatterns = [
 ]
 ```
 
-Also don't miss adding the captcha field into `templates/account/admin/login.html`.
+Finally, render the captcha field in `templates/account/admin/login.html`.

@@ -1,24 +1,28 @@
 ---
 title: "Understanding the Pipeline Design Pattern"
+description: "How to break one heavy workflow into staged, parallel processing for better throughput."
 date: 2023-05-27T11:30:00+07:00
 categories:
   - design
   - parallel processing
+tags:
+  - pipelines
+  - concurrency
+  - architecture
 ---
 
-# Understanding the Pipeline Design Pattern
-
-The Pipeline Design Pattern is a way to solve problems by breaking them down into smaller tasks that are completed in a sequence, similar to an assembly line in a factory. It's like dividing a big task into several smaller steps and passing the output of one step as the input to the next step until the final result is achieved.
+The pipeline design pattern breaks a large workflow into smaller stages.
+Each stage performs one job and passes output to the next stage, similar to an assembly line.
 
 ## The Concept
 
-Think of an assembly line where the goal is to manufacture a number of cars. The manufacture of each car can be separated into a sequence of smaller operations (e.g., installing a windshield), with each operation assigned to a different worker. As the car-to-be moves down the assembly line,it is built up by performing the sequence of operations; each worker, however, performs the same operation over and over on a succession of cars.
+Think of a car assembly line. Building each car is split into repeatable steps (for example, installing the windshield), and each worker specializes in one step.
 
-The Pipeline Design Pattern involves breaking down a series of computations into distinct stages. Each stage performs a part of the computation, then passes it to the next stage while starting on the next computation. This allows multiple stages to be processed at the same time, improving efficiency.
+The same approach applies to software. Instead of completing every operation for one item end-to-end, stages work in parallel across many items. That increases throughput and keeps each stage focused.
 
 ## Example
 
-Let's consider a tool that is built to classify the text content of websites. It scrapes the websites for text data, then sends this text data to a service for cleaning. Following that, the cleaned data is sent to two machine learning models, M1 and M2, for predictions. These models return categories along with scores. Lastly, the final category of the website is calculated using the predictions from M1 and M2. Therefore, there are five operations to be performed:
+Let's consider a tool that classifies website content. It scrapes text, cleans it, sends the cleaned text to two models (M1 and M2), and combines the predictions into a final category. That gives us five stages:
 
 1. Scraping the website for text.
 2. Cleaning the scraped text data.
@@ -26,12 +30,12 @@ Let's consider a tool that is built to classify the text content of websites. It
 4. Sending the cleaned text data to the M2 machine learning model.
 5. Calculating the final category of the website using predictions from M1 and M2.
 
-Consider a situation where we need to scrape data from 100 different domains. If we perform all the operations sequentially for each domain, it would be highly inefficient.
+Now imagine we need to process 100 domains. Running those five steps sequentially for each domain is slow and inefficient.
 
 Let's see how we can use the pipeline design pattern to be much more efficient.
 
-Consider a scenario where we need to process a large number of domains. Instead of processing them all at once, we divide them into smaller batches of 10 domains each. These batches are then processed in stages, going through five different operations: STAGE1 to STAGE5.
+A better approach is to process domains in batches (for example, 10 at a time) through STAGE1 to STAGE5.
 
-Let's take the first batch, B1, as an example. B1 starts at STAGE1, where it undergoes scrapping. Once B1 completes STAGE1, it moves on to STAGE2 for cleaning while the next batch, B2, enters STAGE1 for scrapping. This creates a pipeline where, after the initial setup, each stage is continuously processing a batch.
+Take the first batch, B1. It starts at STAGE1 (scraping), then moves to STAGE2 (cleaning). While B1 is in STAGE2, batch B2 enters STAGE1. After warm-up, every stage is busy at the same time.
 
-Except for the first and last batches, there will always be one batch at each stage of the pipeline at any given time. This ensures a continuous flow of processing, making our system more efficient.
+Except for startup and shutdown, each stage usually has one batch in progress. That continuous flow is the key reason pipelines improve efficiency.

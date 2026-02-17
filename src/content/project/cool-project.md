@@ -9,4 +9,5 @@ image: "placeholder.jpg"
 externalUrl: "https://www.google.com"
 ---
 
-Just a demo text for now, which signifies there is lot of scope for improvement.
+This is a placeholder project page for now.
+I use it as a template for future project write-ups with architecture, tradeoffs, and outcomes.

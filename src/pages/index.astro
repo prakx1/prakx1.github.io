@@ -7,43 +7,61 @@ const notes = (await getCollection("blog", ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime()
 );
 
+const categories = [...new Set(notes.flatMap((note) => note.data.categories))];
 const latest = notes[0];
 ---
 
 <BaseLayout activePath="/">
-  <section class="hero-card">
-    <p class="eyebrow">Personal blog</p>
-    <h1>Simple notes from real engineering work.</h1>
+  <section class="hero-plane">
+    <p class="eyebrow">Personal engineering log</p>
+    <h1>Build. Break. Learn. Write.</h1>
     <p class="hero-copy">
-      I wanted to write again. This is a clean space for backend lessons, design choices,
-      debugging notes, and practical decisions from real projects.
+      I am writing in public again. These notes capture architecture decisions,
+      hard bugs, and system design lessons while they are still fresh.
     </p>
 
     <div class="hero-actions">
       {latest && <a class="button-main" href={`/notes/${latest.slug}/`}>Read latest note</a>}
-      <a class="button-subtle" href="/about/">About me</a>
+      <a class="button-subtle" href="/projects/">See projects</a>
     </div>
+
+    <dl class="hero-stats">
+      <div>
+        <dt>{notes.length}</dt>
+        <dd>Published notes</dd>
+      </div>
+      <div>
+        <dt>{categories.length}</dt>
+        <dd>Active topics</dd>
+      </div>
+      <div>
+        <dt>{latest ? formatDate(latest.data.date) : "Soon"}</dt>
+        <dd>Latest update</dd>
+      </div>
+    </dl>
   </section>
 
-  <section class="section-header">
-    <h2>Latest notes</h2>
+  <section class="stream-header">
+    <h2>Latest Notes</h2>
     <a href="/feed.xml">Subscribe via RSS</a>
   </section>
 
-  <section class="note-grid" aria-label="Blog notes">
+  <section class="note-stream" aria-label="Blog notes">
     {notes.map((note) => (
-      <article class="note-card">
-        <p class="note-meta">{formatDate(note.data.date)}</p>
-        <h3>
-          <a href={`/notes/${note.slug}/`}>{note.data.title}</a>
-        </h3>
-        <p>{note.data.description ?? buildExcerpt(note.body, 180)}</p>
-        <div class="chip-row">
-          {note.data.categories.slice(0, 3).map((category) => (
-            <a class="chip" href={`/category/${categoryToSlug(category)}/`}>
-              {category}
-            </a>
-          ))}
+      <article class="stream-item">
+        <p class="stream-date">{formatDate(note.data.date)}</p>
+        <div class="stream-main">
+          <h3>
+            <a href={`/notes/${note.slug}/`}>{note.data.title}</a>
+          </h3>
+          <p>{note.data.description ?? buildExcerpt(note.body, 195)}</p>
+          <div class="chip-row">
+            {note.data.categories.slice(0, 3).map((category) => (
+              <a class="chip" href={`/category/${categoryToSlug(category)}/`}>
+                {category}
+              </a>
+            ))}
+          </div>
         </div>
       </article>
     ))}

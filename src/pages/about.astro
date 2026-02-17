@@ -3,28 +3,40 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="About" activePath="/about/">
-  <article class="article-shell prose">
-    <p class="eyebrow">About</p>
-    <h1>Prakash Singh</h1>
+  <section class="about-layout">
+    <article class="hero-plane prose">
+      <p class="eyebrow">About</p>
+      <h1>Prakash Singh</h1>
 
-    <p>
-      I am a software engineer with a background in computer science and a B.Tech degree.
-      I work on data-intensive applications and enjoy improving performance across application
-      code and databases.
-    </p>
+      <p>
+        I am a software engineer with a background in computer science and a B.Tech degree.
+        I work on data-intensive applications and enjoy improving performance across application
+        code and databases.
+      </p>
 
-    <p>
-      This blog is where I share practical notes from what I build and learn.
-      Most posts are about backend engineering, system design, and lessons from real projects.
-    </p>
+      <p>
+        This blog is where I share practical notes from what I build and learn.
+        Most posts are about backend engineering, system design, and lessons from real projects.
+      </p>
 
-    <p>
-      Outside work, I follow football, read philosophy, and I am learning guitar.
-    </p>
+      <p>
+        Outside work, I follow football, read philosophy, and I am learning guitar.
+      </p>
+    </article>
 
-    <h2>Contact</h2>
-    <p>
-      <a href="mailto:prakashsinghcs100@gmail.com">prakashsinghcs100@gmail.com</a>
-    </p>
-  </article>
+    <aside class="info-panel">
+      <p class="eyebrow">Now</p>
+      <h2>Current focus</h2>
+      <ul>
+        <li>Backend architecture and scaling patterns.</li>
+        <li>Reliable data pipelines and system observability.</li>
+        <li>Writing short notes to sharpen thinking.</li>
+      </ul>
+
+      <p class="eyebrow">Contact</p>
+      <p>
+        <a href="mailto:prakashsinghcs100@gmail.com">prakashsinghcs100@gmail.com</a>
+      </p>
+    </aside>
+  </section>
 </BaseLayout>

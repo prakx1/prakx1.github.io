@@ -34,35 +34,50 @@ const related = allNotes
 ---
 
 <BaseLayout title={note.data.title} description={note.data.description} activePath="/">
-  <article class="article-shell prose">
-    <p class="eyebrow">Note</p>
-    <h1>{note.data.title}</h1>
+  <article class="reading-shell">
+    <header class="reading-header">
+      <p class="eyebrow">Note</p>
+      <h1>{note.data.title}</h1>
+    </header>
 
-    <div class="note-top-meta">
-      <span class="note-meta">{formatDate(note.data.date)}</span>
-      <div class="chip-row">
-        {note.data.categories.map((category) => (
-          <a class="chip" href={`/category/${categoryToSlug(category)}/`}>{category}</a>
-        ))}
+    <div class="reading-grid">
+      <aside class="reading-rail">
+        <p class="note-meta">Published</p>
+        <p>{formatDate(note.data.date)}</p>
+
+        <p class="note-meta">Categories</p>
+        <div class="chip-row">
+          {note.data.categories.map((category) => (
+            <a class="chip" href={`/category/${categoryToSlug(category)}/`}>{category}</a>
+          ))}
+        </div>
+
+        <p class="note-meta">Navigate</p>
+        <div class="rail-links">
+          <a href="/">All notes</a>
+          <a href="/projects/">Projects</a>
+        </div>
+      </aside>
+
+      <div class="reading-content prose">
+        <Content />
+
+        {related.length > 0 && (
+          <section class="related-list">
+            <h2>Related notes</h2>
+            <ul>
+              {related.map((item) => (
+                <li><a href={`/notes/${item.slug}/`}>{item.data.title}</a></li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <nav class="pager">
+          {newer ? <a href={`/notes/${newer.slug}/`}>&larr; {newer.data.title}</a> : <span></span>}
+          {older ? <a href={`/notes/${older.slug}/`}>{older.data.title} &rarr;</a> : <span></span>}
+        </nav>
       </div>
     </div>
-
-    <Content />
-
-    {related.length > 0 && (
-      <section class="related-list">
-        <h2>Related notes</h2>
-        <ul>
-          {related.map((item) => (
-            <li><a href={`/notes/${item.slug}/`}>{item.data.title}</a></li>
-          ))}
-        </ul>
-      </section>
-    )}
-
-    <nav class="pager">
-      {newer ? <a href={`/notes/${newer.slug}/`}>&larr; {newer.data.title}</a> : <span></span>}
-      {older ? <a href={`/notes/${older.slug}/`}>{older.data.title} &rarr;</a> : <span></span>}
-    </nav>
   </article>
 </BaseLayout>

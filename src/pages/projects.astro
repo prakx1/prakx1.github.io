@@ -15,48 +15,83 @@ interface ProjectItem {
 const projectPages = await getCollection("project");
 const internalBySlug = new Set(projectPages.map((entry) => entry.data.slug ?? entry.slug));
 const projects = projectsData as ProjectItem[];
+
+function summarizeProject(project: ProjectItem): string {
+  if (!project.tags || project.tags.length === 0) {
+    return "Practical build focused on useful engineering outcomes.";
+  }
+
+  return `Built with ${project.tags.slice(0, 3).join(", ")} and focused on real-world utility.`;
+}
 ---
 
 <BaseLayout title="Projects" activePath="/projects/">
-  <section class="article-shell">
+  <section class="hero-plane hero-compact">
     <p class="eyebrow">Projects</p>
-    <h1>Selected work and experiments</h1>
+    <h1>Selected builds and experiments</h1>
     <p class="hero-copy">
-      Most of my work focuses on backend systems, data-heavy applications,
-      and practical engineering tooling.
+      Most of my work centers on backend-heavy applications, data flows,
+      and practical tools designed to survive production conditions.
     </p>
+  </section>
 
-    <div class="project-grid">
-      {projects.map((project) => {
-        const internalPath = project.slug ? `/projects/${project.slug}/` : null;
-        const hasInternal = project.slug ? internalBySlug.has(project.slug) : false;
-        const hasExternal = Boolean(project.url && project.url !== "#");
-        const link = hasInternal ? internalPath : hasExternal ? project.url : null;
+  <section class="project-lanes">
+    {projects.map((project, index) => {
+      const internalPath = project.slug ? `/projects/${project.slug}/` : null;
+      const hasInternal = project.slug ? internalBySlug.has(project.slug) : false;
+      const hasExternal = Boolean(project.url && project.url !== "#");
+      const link = hasInternal ? internalPath : hasExternal ? project.url : null;
         const external = !hasInternal && hasExternal;
 
         return (
-          <article class="project-card">
-            <img src={`/static/projects/${project.image}`} alt={project.name} loading="lazy" />
-            <h3>
-              {link ? (
-                <a href={link} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}>
-                  {project.name}
-                </a>
-              ) : (
-                project.name
-              )}
-            </h3>
+          <article class={`project-lane ${index % 2 === 1 ? "is-alt" : ""}`}>
+            {link ? (
+              <a
+                class="lane-image-wrap"
+                href={link}
+                target={external ? "_blank" : undefined}
+                rel={external ? "noopener noreferrer" : undefined}
+              >
+                <img class="lane-image" src={`/static/projects/${project.image}`} alt={project.name} loading="lazy" />
+              </a>
+            ) : (
+              <div class="lane-image-wrap is-static">
+                <img class="lane-image" src={`/static/projects/${project.image}`} alt={project.name} loading="lazy" />
+              </div>
+            )}
 
-            <div class="chip-row">
-              {(project.tags ?? []).map((tag) => (
-                <span class="chip">{tag}</span>
-              ))}
+            <div class="lane-body">
+              <p class="note-meta">{project.date ?? "In progress"}</p>
+              <h3>
+                {link ? (
+                  <a href={link} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}>
+                    {project.name}
+                  </a>
+                ) : (
+                  project.name
+                )}
+              </h3>
+
+              <p>{summarizeProject(project)}</p>
+
+              <div class="chip-row">
+                {(project.tags ?? []).map((tag) => (
+                  <span class="chip">{tag}</span>
+                ))}
+              </div>
+
+              <div class="lane-actions">
+                {link ? (
+                  <a href={link} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}>
+                    {external ? "Open external" : "Open case study"}
+                  </a>
+                ) : (
+                  <span>Case study coming soon</span>
+                )}
+              </div>
             </div>
-
-            <p class="note-meta">{project.date}</p>
           </article>
         );
       })}
-    </div>
   </section>
 </BaseLayout>

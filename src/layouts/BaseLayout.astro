@@ -41,51 +41,74 @@ const nav = [
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
     <link
-      rel="preconnect"
-      href="https://fonts.googleapis.com"
-    />
-    <link
-      rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin="anonymous"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Oxanium:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
-    <div class="backdrop" aria-hidden="true"></div>
-    <div class="grid-overlay" aria-hidden="true"></div>
+    <div class="aurora" aria-hidden="true"></div>
+    <div class="scan-grid" aria-hidden="true"></div>
+
     <div class="app-shell">
       <header class="site-header">
         <a class="brand" href="/">
-          <span class="brand-signal"></span>
-          <span>
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-copy">
             <strong>Notebook</strong>
             <small>Prakash Singh</small>
           </span>
         </a>
 
-        <nav>
-          {nav.map((item) => (
-            <a href={item.href} class={activePath === item.href ? "active" : ""}>{item.label}</a>
-          ))}
-        </nav>
+        <div class="header-stack">
+          <span class="status-pill">writing mode: live</span>
+          <nav>
+            {nav.map((item) => (
+              <a href={item.href} class={activePath === item.href ? "active" : ""}>{item.label}</a>
+            ))}
+          </nav>
+        </div>
       </header>
 
-      <main>
-        <slot />
-      </main>
+      <div class="shell-grid">
+        <aside class="signal-rail">
+          <p class="rail-kicker">Signal</p>
+          <h2>Ship thoughts before they fade.</h2>
+          <ul class="signal-list">
+            <li>
+              <span>Now</span>
+              <p>Writing real backend lessons every week.</p>
+            </li>
+            <li>
+              <span>Focus</span>
+              <p>Systems design, performance, and practical debugging.</p>
+            </li>
+            <li>
+              <span>Style</span>
+              <p>Short, useful, and honest notes from production work.</p>
+            </li>
+          </ul>
 
-      <footer class="site-footer">
-        <p>Writing in public about backend engineering and practical systems work.</p>
-        <div>
-          <a href="https://github.com/prakx1" target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href="mailto:prakashsinghcs100@gmail.com">Email</a>
-        </div>
-      </footer>
+          <div class="rail-links">
+            <a href="https://github.com/prakx1" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="mailto:prakashsinghcs100@gmail.com">Email</a>
+          </div>
+        </aside>
+
+        <main class="content-stage">
+          <slot />
+
+          <footer class="site-footer">
+            <p>Built on Astro. Written in public by Prakash Singh.</p>
+            <div>
+              <a href="/feed.xml">RSS</a>
+              <a href="/about/">Contact</a>
+            </div>
+          </footer>
+        </main>
+      </div>
     </div>
   </body>
 </html>

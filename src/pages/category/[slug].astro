@@ -2,7 +2,7 @@
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { categoryToSlug, formatDate, slugToCategoryLabel } from "../../lib/content";
+import { buildExcerpt, categoryToSlug, formatDate, slugToCategoryLabel } from "../../lib/content";
 
 interface Props {
   notes: CollectionEntry<"blog">[];
@@ -39,17 +39,21 @@ const heading = label || slugToCategoryLabel(Astro.params.slug ?? "");
 ---
 
 <BaseLayout title={`Category: ${heading}`} activePath="/">
-  <section class="article-shell">
-    <p class="eyebrow">Category</p>
+  <section class="hero-plane hero-compact">
+    <p class="eyebrow">Category view</p>
     <h1>{heading}</h1>
+    <p class="hero-copy">{notes.length} note(s) in this topic.</p>
+  </section>
 
-    <div class="category-list">
-      {notes.map((note) => (
-        <article>
-          <a href={`/notes/${note.slug}/`}>{note.data.title}</a>
-          <span>{formatDate(note.data.date)}</span>
-        </article>
-      ))}
-    </div>
+  <section class="note-stream">
+    {notes.map((note) => (
+      <article class="stream-item">
+        <p class="stream-date">{formatDate(note.data.date)}</p>
+        <div class="stream-main">
+          <h3><a href={`/notes/${note.slug}/`}>{note.data.title}</a></h3>
+          <p>{note.data.description ?? buildExcerpt(note.body, 180)}</p>
+        </div>
+      </article>
+    ))}
   </section>
 </BaseLayout>

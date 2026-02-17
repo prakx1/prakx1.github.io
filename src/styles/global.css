@@ -342,6 +342,30 @@ p {
   gap: 10px;
 }
 
+.intro-strip {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(250px, 0.95fr);
+  gap: 14px;
+  align-items: stretch;
+}
+
+.intro-main {
+  min-width: 0;
+}
+
+.intro-main .hero-copy {
+  margin-bottom: 0;
+  max-width: 58ch;
+}
+
+.intro-actions {
+  margin-top: 12px;
+}
+
+.intro-stats {
+  margin: 0;
+}
+
 .hero-stats div {
   border: 1px solid rgba(143, 172, 214, 0.24);
   border-radius: 12px;
@@ -749,6 +773,10 @@ a.chip-tag:hover {
 }
 
 @media (max-width: 820px) {
+  .intro-strip {
+    grid-template-columns: 1fr;
+  }
+
   .project-lane,
   .project-lane.is-alt {
     grid-template-columns: 1fr;
@@ -768,7 +796,8 @@ a.chip-tag:hover {
     margin-top: 0;
   }
 
-  .hero-stats {
+  .hero-stats,
+  .intro-stats {
     grid-template-columns: 1fr;
   }
 }

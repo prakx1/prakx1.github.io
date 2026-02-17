@@ -13,18 +13,20 @@ const latest = notes[0];
 ---
 
 <BaseLayout activePath="/">
-  <section class="hero-plane">
-    <p class="eyebrow">Personal engineering notebook</p>
-    <p class="hero-copy">
-      I use this space to share what I build, what I think, and what I test.
-    </p>
+  <section class="hero-plane hero-compact intro-strip">
+    <div class="intro-main">
+      <p class="eyebrow">Personal engineering notebook</p>
+      <p class="hero-copy">
+        I use this space to share what I build, what I think, and what I test.
+      </p>
 
-    <div class="hero-actions">
-      {latest && <a class="button-main" href={`/notes/${latest.slug}/`}>Start with latest note</a>}
-      <a class="button-subtle" href="/projects/">Browse projects</a>
+      <div class="hero-actions intro-actions">
+        {latest && <a class="button-main" href={`/notes/${latest.slug}/`}>Latest note</a>}
+        <a class="button-subtle" href="/projects/">Projects</a>
+      </div>
     </div>
 
-    <dl class="hero-stats">
+    <dl class="hero-stats intro-stats">
       <div>
         <dt>{notes.length}</dt>
         <dd>Notes</dd>
@@ -35,7 +37,7 @@ const latest = notes[0];
       </div>
       <div>
         <dt>{latest ? formatDate(latest.data.date) : "Soon"}</dt>
-        <dd>Last publish</dd>
+        <dd>Last update</dd>
       </div>
     </dl>
   </section>
@@ -53,7 +55,7 @@ const latest = notes[0];
           <h3>
             <a href={`/notes/${note.slug}/`}>{note.data.title}</a>
           </h3>
-          <p>{note.data.description ?? buildExcerpt(note.body, 195)}</p>
+          <p>{note.data.description ?? buildExcerpt(note.body, 160)}</p>
           <div class="chip-row">
             {note.data.categories.slice(0, 3).map((category) => (
               <a class="chip" href={`/category/${categoryToSlug(category)}/`}>

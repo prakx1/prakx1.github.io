@@ -1,35 +1,58 @@
 :root {
-  --bg: #f6f9fc;
-  --sidebar: #eef4fb;
-  --surface: #ffffff;
-  --surface-soft: #f8fbff;
-  --text: #0f172a;
-  --text-soft: #4b5563;
-  --line: #d6e2f0;
-  --accent: #0a63c9;
-  --accent-strong: #084e9d;
+  --bg: #070b14;
+  --sidebar: #0e1424;
+  --surface: #0f1728;
+  --surface-soft: #15203a;
+  --text: #e8eeff;
+  --text-soft: #9ab0db;
+  --line: #24324f;
+  --accent: #67e8f9;
+  --accent-strong: #22d3ee;
+  --title-font: "Sora", "Segoe UI", sans-serif;
+  --body-font: "Manrope", "Segoe UI", sans-serif;
+  --mono-font: "IBM Plex Mono", monospace;
+  --radius: 12px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0a1019;
-    --sidebar: #111a27;
-    --surface: #0f1724;
-    --surface-soft: #131e2f;
-    --text: #e6edf7;
-    --text-soft: #9aa8be;
-    --line: #22324a;
-    --accent: #65a8ff;
-    --accent-strong: #8bbcff;
-  }
+body[data-theme="swiss"] {
+  --bg: #f3f3f1;
+  --sidebar: #ffffff;
+  --surface: #ffffff;
+  --surface-soft: #f6f6f6;
+  --text: #111111;
+  --text-soft: #4b4b4b;
+  --line: #d9d9d9;
+  --accent: #ce1126;
+  --accent-strong: #9f0d1d;
+  --title-font: "Syne", "Segoe UI", sans-serif;
+  --body-font: "Manrope", "Segoe UI", sans-serif;
+  --mono-font: "IBM Plex Mono", monospace;
+  --radius: 0;
+}
+
+body[data-theme="retro"] {
+  --bg: #181a12;
+  --sidebar: #1f2117;
+  --surface: #23261a;
+  --surface-soft: #2a2d20;
+  --text: #d7ff9f;
+  --text-soft: #9ecf74;
+  --line: #3b4328;
+  --accent: #7bff57;
+  --accent-strong: #a6ff87;
+  --title-font: "VT323", monospace;
+  --body-font: "IBM Plex Mono", monospace;
+  --mono-font: "IBM Plex Mono", monospace;
+  --radius: 4px;
 }
 
 body {
-  background: var(--bg);
+  background: radial-gradient(circle at 10% 0%, rgba(90, 115, 255, 0.08), transparent 35%), var(--bg);
   color: var(--text);
-  font-family: "Manrope", "Segoe UI", sans-serif;
+  font-family: var(--body-font);
   font-size: 16px;
   line-height: 1.7;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 h1,
@@ -37,21 +60,22 @@ h2,
 h3,
 h4 {
   color: var(--text);
-  font-family: "Manrope", "Segoe UI", sans-serif;
+  font-family: var(--title-font);
   font-weight: 700;
   letter-spacing: -0.02em;
 }
 
 h1 {
-  font-size: 2rem;
+  font-size: 2.05rem;
   margin: 0 0 0.5rem;
 }
 
 h2 {
-  font-size: 1.05rem;
+  font-family: var(--mono-font);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
   margin: 2rem 0 0.9rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 h3 {
@@ -80,13 +104,13 @@ hr {
 div.col-sm-3 {
   color: var(--text-soft);
   font-size: 12px;
-  margin-top: 42px;
+  margin-top: 40px;
 }
 
 .fixed-condition {
   background: var(--sidebar);
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: var(--radius);
   padding: 18px 16px;
 }
 
@@ -133,10 +157,11 @@ div.col-sm-3 div.profile-about {
   padding: 0;
 }
 
-.sidebar-nav strong {
+.sidebar-nav strong,
+.theme-switcher strong {
   color: var(--text);
   display: block;
-  font-family: "IBM Plex Mono", monospace;
+  font-family: var(--mono-font);
   font-size: 0.72rem;
   letter-spacing: 0.08em;
   margin-bottom: 7px;
@@ -148,16 +173,39 @@ div.col-sm-3 div.profile-about {
   margin: 6px 0;
 }
 
+.theme-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.theme-btn {
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text-soft);
+  cursor: pointer;
+  font-family: var(--mono-font);
+  font-size: 0.72rem;
+  padding: 4px 9px;
+}
+
+.theme-btn.active,
+.theme-btn:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
 .main-layout {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: var(--radius);
   padding: 30px 30px 16px;
 }
 
 .kicker {
   color: var(--text-soft);
-  font-family: "IBM Plex Mono", monospace;
+  font-family: var(--mono-font);
   font-size: 0.75rem;
   letter-spacing: 0.07em;
   margin: 0 0 8px;
@@ -194,13 +242,13 @@ div.col-sm-3 div.profile-about {
 .post-card {
   background: var(--surface-soft);
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: var(--radius);
   padding: 12px 14px;
 }
 
 .post-card .post-meta {
   color: var(--text-soft);
-  font-family: "IBM Plex Mono", monospace;
+  font-family: var(--mono-font);
   font-size: 0.72rem;
   letter-spacing: 0.05em;
   margin-bottom: 7px;
@@ -222,7 +270,7 @@ div.col-sm-3 div.profile-about {
 
 .posts li span {
   color: var(--text-soft);
-  font-family: "IBM Plex Mono", monospace;
+  font-family: var(--mono-font);
   font-size: 0.72rem;
   margin-left: 8px;
 }
@@ -243,7 +291,7 @@ div.col-sm-3 div.profile-about {
 span.time,
 span.categories {
   color: var(--text-soft);
-  font-family: "IBM Plex Mono", monospace;
+  font-family: var(--mono-font);
   font-size: 0.72rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -266,9 +314,9 @@ span.categories {
 div.content pre {
   background: var(--surface-soft);
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: var(--radius);
   color: var(--text);
-  font-family: "IBM Plex Mono", monospace;
+  font-family: var(--mono-font);
   font-size: 0.84rem;
   overflow-x: auto;
   padding: 12px;
@@ -280,7 +328,7 @@ div.content pre {
   border-top: 1px solid var(--line);
   display: flex;
   flex-wrap: wrap;
-  font-family: "IBM Plex Mono", monospace;
+  font-family: var(--mono-font);
   font-size: 0.75rem;
   gap: 10px;
   margin-top: 24px;
@@ -294,13 +342,13 @@ div.content pre {
 .related-panel {
   background: var(--surface-soft);
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: var(--radius);
   margin-top: 24px;
   padding: 12px;
 }
 
 .related-panel h4 {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: var(--mono-font);
   font-size: 0.78rem;
   letter-spacing: 0.06em;
   margin: 0 0 8px;
@@ -314,7 +362,7 @@ div.content pre {
 
 .PageNavigation {
   display: block;
-  font-family: "IBM Plex Mono", monospace;
+  font-family: var(--mono-font);
   font-size: 13px;
   overflow: hidden;
   width: auto;
@@ -337,7 +385,7 @@ div.content pre {
 
 .post-content img,
 .content img {
-  border-radius: 10px;
+  border-radius: var(--radius);
   max-width: 100%;
 }
 
@@ -348,6 +396,20 @@ footer {
   margin-bottom: 2em;
   margin-top: 16px;
   padding-top: 12px;
+}
+
+body[data-theme="retro"] .author-name,
+body[data-theme="retro"] h1,
+body[data-theme="retro"] h3 {
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+body[data-theme="retro"] .main-layout,
+body[data-theme="retro"] .fixed-condition,
+body[data-theme="retro"] .post-card,
+body[data-theme="retro"] .related-panel {
+  box-shadow: inset 0 0 0 1px rgba(123, 255, 87, 0.12);
 }
 
 @media (min-width: 1024px) {

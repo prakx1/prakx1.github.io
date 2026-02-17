@@ -90,7 +90,7 @@ layout: compress
     <!-- Bootstrap core CSS -->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;600;700;800&family=Syne:wght@600;700;800&family=VT323&display=swap" rel="stylesheet" type="text/css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/static/css/super-search.css">
     <link rel="stylesheet" href="/static/css/thickbox.css">
@@ -110,7 +110,7 @@ layout: compress
       </script>
     {% endif %}
   </head>
-  <body>
+  <body data-theme="cyber">
     <div class="container">
       <div class="col-sm-3">
         <div class="fixed-condition">
@@ -141,6 +141,13 @@ layout: compress
               <li><a class="about" href="{{ i.url }}">{{ i.text }}</a></li>
             {% endfor %}
           </ul>
+          <hr />
+          <div class="theme-switcher">
+            <strong>Theme Lab</strong>
+            <button type="button" class="theme-btn" data-theme="cyber">Cyber</button>
+            <button type="button" class="theme-btn" data-theme="swiss">Swiss</button>
+            <button type="button" class="theme-btn" data-theme="retro">Retro</button>
+          </div>
         </div>
         <!-- end /.fixed-condition -->
       </div>
@@ -165,5 +172,29 @@ layout: compress
     <script src="/static/js/super-search.js"></script>
     <script src="/static/js/thickbox-compressed.js"></script>
     <script src="/static/js/projects.js"></script>
+    <script>
+      (function() {
+        var key = "theme_choice";
+        var themes = ["cyber", "swiss", "retro"];
+        var saved = localStorage.getItem(key);
+        var theme = themes.indexOf(saved) > -1 ? saved : "cyber";
+        document.body.setAttribute("data-theme", theme);
+        var buttons = document.querySelectorAll(".theme-btn");
+        for (var i = 0; i < buttons.length; i++) {
+          if (buttons[i].getAttribute("data-theme") === theme) {
+            buttons[i].classList.add("active");
+          }
+          buttons[i].addEventListener("click", function() {
+            var selected = this.getAttribute("data-theme");
+            document.body.setAttribute("data-theme", selected);
+            localStorage.setItem(key, selected);
+            for (var j = 0; j < buttons.length; j++) {
+              buttons[j].classList.remove("active");
+            }
+            this.classList.add("active");
+          });
+        }
+      })();
+    </script>
   </body>
 </html>

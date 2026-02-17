@@ -4,18 +4,18 @@ layout: default
 
 <div id="home">
   <section class="home-intro">
-    <p class="kicker">Personal blog</p>
+    <p class="kicker">Engineering notebook</p>
     <h1>{{ site.title }}</h1>
     <p class="intro-copy">{{ site.description }}</p>
     <div class="intro-links">
-      <a class="intro-link" href="/about/">About</a>
-      <a class="intro-link" href="/feed.xml">RSS</a>
-      <a class="intro-link" href="{{ site.github }}" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a class="intro-link" href="/about/">About me</a>
+      <a class="intro-link" href="/projects/">Projects</a>
+      <a class="intro-link" href="/feed.xml">RSS feed</a>
     </div>
   </section>
 
   <section class="featured-posts">
-    <h2>Latest Notes</h2>
+    <h2>Latest</h2>
     <div class="featured-grid">
       {% for post in site.posts limit:3 %}
         <article class="post-card">
@@ -28,7 +28,7 @@ layout: default
   </section>
 
   <section class="post-archive">
-    <h2>Archive</h2>
+    <h2>All posts</h2>
     <ol class="posts">
       {% for post in paginator.posts %}
         <li>

@@ -1,57 +1,61 @@
 ---
 layout: default
 ---
+{% assign stream = paginator.posts %}
+{% if stream == nil %}
+  {% assign stream = site.posts %}
+{% endif %}
 
-<div id="home" class="timeline-home">
-  <ol class="timeline-feed" id="timeline-feed">
-    <li class="timeline-turn turn-system">
-      <span class="turn-meta">system</span>
-      <h1>{{ site.title }}</h1>
-      <p>{{ site.description }}</p>
-    </li>
+<section class="home-hero">
+  <p class="eyebrow">Personal blog</p>
+  <h1>Simple notes from real engineering work.</h1>
+  <p class="lead-copy">I am writing in public again. Short lessons, backend decisions, and practical breakdowns I can reuse later.</p>
+  <div class="hero-actions">
+    {% if site.posts.size > 0 %}
+      <a class="button-primary" href="{{ site.posts.first.url }}">Read the latest note</a>
+    {% endif %}
+    <a class="button-ghost" href="/about/">About me</a>
+  </div>
+</section>
 
-    <li class="timeline-turn turn-user">
-      <span class="turn-meta">user</span>
-      <p>Build an engineering memory that grows from real projects, not just polished highlights.</p>
-    </li>
+<section class="home-section">
+  <div class="section-head">
+    <h2>Latest notes</h2>
+    <a href="/feed.xml">RSS</a>
+  </div>
 
-    <li class="timeline-turn turn-assistant">
-      <span class="turn-meta">assistant</span>
-      <p>Acknowledged. Streaming artifacts from lived experience, design tradeoffs, and practical debugging work.</p>
-      <ul class="intent-lines">
-        <li>Capture decisions while context is fresh.</li>
-        <li>Preserve failed paths and why they failed.</li>
-        <li>Convert work into reusable playbooks.</li>
-      </ul>
-    </li>
-
-    <li class="timeline-turn turn-telemetry" id="telemetry-turn">
-      <span class="turn-meta">runtime telemetry</span>
-      <div class="telemetry-grid">
-        <ul class="agent-feed" id="agent-feed"></ul>
-        <canvas id="runtime-pulse" width="1000" height="240"></canvas>
-      </div>
-    </li>
-
-    {% for post in site.posts %}
-      <li class="timeline-turn turn-artifact{% if forloop.index > 7 %} is-hidden{% endif %}" data-post-title="{{ post.title | escape }}">
-        <span class="turn-meta">artifact · {{ post.date | date: "%Y-%m-%d" }}</span>
+  <ul class="post-stream">
+    {% for post in stream limit: 12 %}
+      <li class="post-card">
+        <p class="post-date">{{ post.date | date: "%b %d, %Y" }}</p>
         <h3><a class="log-title" href="{{ post.url }}">{{ post.title }}</a></h3>
-        <p class="artifact-summary">{{ post.excerpt | strip_html | truncate: 170 }}</p>
-        <div class="turn-signals">
-          <span class="log-metrics"></span>
-          <span class="log-status">done</span>
-        </div>
-        <div class="turn-actions">
-          <button class="expand-turn" type="button">Expand context</button>
-          <a href="{{ post.url }}">Open full note</a>
-        </div>
-        <div class="turn-detail">
-          <p>{{ post.content | strip_html | truncate: 620 }}</p>
-        </div>
+        <p>{{ post.excerpt | strip_html | truncate: 180 }}</p>
+        {% if post.categories and post.categories != empty %}
+          <div class="chip-row">
+            {% for category in post.categories limit: 3 %}
+              <a class="chip" href="/category/{{ category }}">{{ category }}</a>
+            {% endfor %}
+          </div>
+        {% endif %}
       </li>
     {% endfor %}
-  </ol>
+  </ul>
+</section>
 
-  <div id="timeline-sentinel" class="timeline-sentinel">Loading older turns...</div>
-</div><!-- end #home -->
+{% if paginator and paginator.total_pages > 1 %}
+  <nav class="pagination-nav">
+    {% if paginator.previous_page %}
+      <a href="{{ paginator.previous_page_path }}">&laquo; Newer</a>
+    {% else %}
+      <span class="disabled">&laquo; Newer</span>
+    {% endif %}
+
+    <span>Page {{ paginator.page }} of {{ paginator.total_pages }}</span>
+
+    {% if paginator.next_page %}
+      <a href="{{ paginator.next_page_path }}">Older &raquo;</a>
+    {% else %}
+      <span class="disabled">Older &raquo;</span>
+    {% endif %}
+  </nav>
+{% endif %}

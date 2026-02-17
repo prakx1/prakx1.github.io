@@ -1,31 +1,31 @@
 ---
 layout: default
 ---
-<article class="post">
-  <header class="post-header">
+<article class="prose article-card">
+  <header class="article-header">
+    <p class="eyebrow">Work</p>
     <h1 class="post-title">{{ page.title }}</h1>
-    <hr />
   </header>
 
-  <div class="post-content">
+  <div class="article-content">
     {{ content }}
 
-    {% assign p_array = "" | split:"|"  %}
+    {% assign p_array = "" | split:"|" %}
     {% for project in site.project %}
       {% capture p_slug %}{{ project.url | split:"/" | last }},{{ project.url }}{% endcapture %}
       {% assign p_slug_arr = p_slug | split:"," %}
-      {% assign p_array = p_array | push: p_slug_arr  %}
+      {% assign p_array = p_array | push: p_slug_arr %}
     {% endfor %}
 
-    <div class="projects">
-      {% include project_tags.html %}
-      
+    {% include project_tags.html %}
+
+    <div class="project-grid">
       {% for i in site.data.projects %}
-      <div class="project-item project-outer" data-tags='{{ i.tags | jsonify | downcase }}'>
-        <div class="project-inner">
-          <a href="/static/projects/{{ i.image }}" class="thickbox">
-            <div class="project-img bordered" style="background-image: url('/static/projects/{{ i.image }}');"></div>
+        <article class="project-card project-item" data-tags='{{ i.tags | jsonify | downcase }}'>
+          <a href="/static/projects/{{ i.image }}" class="project-image-link thickbox">
+            <div class="project-img project-image bordered" style="background-image: url('/static/projects/{{ i.image }}');"></div>
           </a>
+
           {% assign p_url = nil %}
           {% for pr in p_array %}
             {% if pr contains i.slug %}
@@ -34,32 +34,30 @@ layout: default
           {% endfor %}
 
           {% if p_url == nil %}{% assign p_url = i.url %}{% endif %}
+
           {% if p_url %}
-            <a class="project-detail" href="{{ p_url }}">
-          {% endif %}
+            <h3 class="project-headlines"><a class="project-detail" href="{{ p_url }}">{{ i.name }}</a></h3>
+          {% else %}
             <h3 class="project-headlines">{{ i.name }}</h3>
-          {% if p_url %}
-            </a>
           {% endif %}
 
           <div class="project-content">
             <div class="tag-holder">
               {% if i.tags %}
                 {% for j in i.tags %}
-                  <span class="tags tag-filter" data-tag="{{ j | downcase }}"><a href="#{{ j }}">{{ j }}</a></span>
+                  <span class="tags tag-filter" data-tag="{{ j | downcase }}">{{ j }}</span>
                 {% endfor %}
               {% endif %}
             </div>
           </div>
+
           <div class="project-footer">
             {% if i.url %}
-              <a href="{{ i.url }}" class="project-link" target="_blank"><i class="fa fa-globe"></i> View</a>
+              <a href="{{ i.url }}" class="project-link" target="_blank" rel="noopener noreferrer">Live</a>
             {% endif %}
             <span class="project-timeline">{{ i.date }}</span>
           </div>
-        </div>
-        <hr>
-      </div>
+        </article>
       {% endfor %}
     </div>
   </div>

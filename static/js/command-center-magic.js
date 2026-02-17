@@ -1,9 +1,4 @@
 (function () {
-  var structureController = {
-    setMode: function () {},
-    getMode: function () { return "latest"; }
-  };
-
   function ready(fn) {
     if (document.readyState !== "loading") {
       fn();
@@ -22,119 +17,135 @@
   }
 
   ready(function () {
-    structureController = initStructureSwitcher();
     initTypedPrompt();
-    initCommandPalette(structureController);
+    initAmbientField();
+    initCommandPalette();
     initRuntimePulse();
     initAgentFeed();
+    initArtifactRail();
     enhanceExecutionLog();
   });
-
-  function initStructureSwitcher() {
-    var home = document.getElementById("home");
-    var buttons = document.querySelectorAll(".structure-btn");
-    var caption = document.getElementById("mode-caption");
-    var key = "structure_mode";
-    var labels = {
-      latest: "Latest-first layout active",
-      manifesto: "Manifesto-first layout active",
-      stream: "Stream-first layout active"
-    };
-
-    if (!home || !buttons.length) {
-      return structureController;
-    }
-
-    function setMode(mode) {
-      if (!labels[mode]) mode = "latest";
-      home.setAttribute("data-structure", mode);
-
-      for (var i = 0; i < buttons.length; i++) {
-        buttons[i].classList.toggle("active", buttons[i].getAttribute("data-structure") === mode);
-      }
-
-      if (caption) caption.textContent = labels[mode];
-
-      try {
-        localStorage.setItem(key, mode);
-      } catch (e) {
-        // Ignore storage restrictions.
-      }
-
-      if (mode === "stream") {
-        setTimeout(function () {
-          window.dispatchEvent(new Event("resize"));
-        }, 80);
-      }
-    }
-
-    function getMode() {
-      return home.getAttribute("data-structure") || "latest";
-    }
-
-    for (var i = 0; i < buttons.length; i++) {
-      buttons[i].addEventListener("click", function () {
-        setMode(this.getAttribute("data-structure"));
-      });
-    }
-
-    var saved = "latest";
-    try {
-      saved = localStorage.getItem(key) || "latest";
-    } catch (e) {
-      saved = "latest";
-    }
-
-    setMode(saved);
-
-    return {
-      setMode: setMode,
-      getMode: getMode
-    };
-  }
 
   function initTypedPrompt() {
     var el = document.getElementById("typed-command");
     if (!el) return;
 
     var prompts = [
-      "publish --notes --in-public --build-in-progress",
-      "analyze --systems --latency --tradeoffs",
-      "ship --small --often --with-context",
-      "learn --from-production --document --iterate"
+      "capture --signal --from-real-work --daily",
+      "reflect --tradeoffs --context --consequences",
+      "publish --small --often --without-perfectionism",
+      "build --memory --through-writing --in-public"
     ];
 
-    var promptIndex = 0;
-    var charIndex = 0;
+    var p = 0;
+    var c = 0;
     var deleting = false;
 
     function tick() {
-      var full = prompts[promptIndex];
+      var full = prompts[p];
 
       if (!deleting) {
-        charIndex += 1;
-        el.textContent = full.slice(0, charIndex);
-        if (charIndex === full.length) {
+        c += 1;
+        el.textContent = full.slice(0, c);
+        if (c === full.length) {
           deleting = true;
-          setTimeout(tick, 1200);
+          setTimeout(tick, 1300);
           return;
         }
       } else {
-        charIndex -= 1;
-        el.textContent = full.slice(0, charIndex);
-        if (charIndex === 0) {
+        c -= 1;
+        el.textContent = full.slice(0, c);
+        if (c === 0) {
           deleting = false;
-          promptIndex = (promptIndex + 1) % prompts.length;
+          p = (p + 1) % prompts.length;
         }
       }
 
-      setTimeout(tick, deleting ? 35 : 48);
+      setTimeout(tick, deleting ? 34 : 50);
     }
 
     tick();
   }
 
-  function initCommandPalette(structure) {
+  function initAmbientField() {
+    var canvas = document.getElementById("ambient-field");
+    if (!canvas) return;
+
+    var ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    var ratio = window.devicePixelRatio || 1;
+    var dots = [];
+
+    function resize() {
+      var w = window.innerWidth;
+      var h = window.innerHeight;
+      canvas.width = Math.floor(w * ratio);
+      canvas.height = Math.floor(h * ratio);
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      initDots(w, h);
+    }
+
+    function initDots(w, h) {
+      dots = [];
+      var count = Math.floor((w * h) / 22000);
+      for (var i = 0; i < count; i++) {
+        dots.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35,
+          r: Math.random() * 1.8 + 0.6
+        });
+      }
+    }
+
+    function draw() {
+      var w = canvas.clientWidth;
+      var h = canvas.clientHeight;
+      ctx.clearRect(0, 0, w, h);
+
+      for (var i = 0; i < dots.length; i++) {
+        var d = dots[i];
+        d.x += d.vx;
+        d.y += d.vy;
+
+        if (d.x < 0 || d.x > w) d.vx *= -1;
+        if (d.y < 0 || d.y > h) d.vy *= -1;
+
+        ctx.fillStyle = "rgba(120, 170, 255, 0.55)";
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      for (i = 0; i < dots.length; i++) {
+        for (var j = i + 1; j < dots.length; j++) {
+          var dx = dots[i].x - dots[j].x;
+          var dy = dots[i].y - dots[j].y;
+          var dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            ctx.strokeStyle = "rgba(112, 226, 255," + (0.14 - dist / 1000) + ")";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(dots[i].x, dots[i].y);
+            ctx.lineTo(dots[j].x, dots[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    resize();
+    window.addEventListener("resize", resize);
+    draw();
+  }
+
+  function initCommandPalette() {
     var overlay = document.getElementById("command-palette");
     var input = document.getElementById("palette-input");
     var list = document.getElementById("palette-results");
@@ -147,13 +158,11 @@
       { label: "Go: About", run: function () { location.href = "/about/"; } },
       { label: "Go: Projects", run: function () { location.href = "/projects/"; } },
       { label: "Go: Feed", run: function () { location.href = "/feed.xml"; } },
-      { label: "View: Recent Outputs", run: function () { scrollToHeading("Recent Outputs"); } },
-      { label: "View: Execution Log", run: function () { scrollToHeading("Execution Log"); } },
-      { label: "Structure: Latest-first", run: function () { structure.setMode("latest"); } },
-      { label: "Structure: Manifesto-first", run: function () { structure.setMode("manifesto"); } },
-      { label: "Structure: Stream-first", run: function () { structure.setMode("stream"); } },
+      { label: "View: Generated Artifacts", run: function () { scrollToHeading("Generated Artifacts"); } },
+      { label: "View: Runtime Telemetry", run: function () { scrollToHeading("Runtime Telemetry"); } },
+      { label: "View: Execution River", run: function () { scrollToHeading("Execution River"); } },
       { label: "Mode: Toggle Zen", run: function () { document.body.classList.toggle("zen-mode"); } },
-      { label: "Action: Surprise Me", run: randomPost }
+      { label: "Action: Surprise Post", run: randomPost }
     ];
 
     var current = [];
@@ -182,11 +191,16 @@
         li.dataset.index = i;
         if (i === 0) li.classList.add("active");
         li.addEventListener("click", function () {
-          var idx = Number(this.dataset.index);
-          execute(idx);
+          execute(Number(this.dataset.index));
         });
         list.appendChild(li);
       }
+    }
+
+    function execute(index) {
+      if (!current[index]) return;
+      close();
+      current[index].run();
     }
 
     function move(delta) {
@@ -198,22 +212,15 @@
       }
     }
 
-    function execute(index) {
-      if (!current[index]) return;
-      close();
-      current[index].run();
-    }
-
     function filter() {
       var q = input.value.toLowerCase().trim();
       if (!q) {
         render(commands);
         return;
       }
-      var filtered = commands.filter(function (c) {
-        return c.label.toLowerCase().indexOf(q) > -1;
-      });
-      render(filtered);
+      render(commands.filter(function (cmd) {
+        return cmd.label.toLowerCase().indexOf(q) > -1;
+      }));
     }
 
     trigger.addEventListener("click", open);
@@ -226,11 +233,8 @@
     document.addEventListener("keydown", function (e) {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        if (overlay.classList.contains("open")) {
-          close();
-        } else {
-          open();
-        }
+        if (overlay.classList.contains("open")) close();
+        else open();
         return;
       }
 
@@ -251,18 +255,18 @@
       }
     });
 
-    function scrollToHeading(text) {
-      var headers = document.querySelectorAll("h2");
-      for (var i = 0; i < headers.length; i++) {
-        if (headers[i].textContent.trim() === text && headers[i].getClientRects().length) {
-          headers[i].scrollIntoView({ behavior: "smooth", block: "start" });
+    function scrollToHeading(label) {
+      var heads = document.querySelectorAll("h2");
+      for (var i = 0; i < heads.length; i++) {
+        if (heads[i].textContent.trim() === label && heads[i].getClientRects().length) {
+          heads[i].scrollIntoView({ behavior: "smooth", block: "start" });
           return;
         }
       }
     }
 
     function randomPost() {
-      var links = Array.prototype.slice.call(document.querySelectorAll(".log-title, .post-card h3 a, .posts a"));
+      var links = Array.prototype.slice.call(document.querySelectorAll(".log-title, .node-title, .posts a"));
       if (!links.length) return;
       var pick = links[Math.floor(Math.random() * links.length)];
       if (pick && pick.getAttribute("href")) {
@@ -279,6 +283,7 @@
     if (!ctx) return;
 
     var ratio = window.devicePixelRatio || 1;
+
     function resize() {
       var rect = canvas.getBoundingClientRect();
       canvas.width = Math.floor(rect.width * ratio);
@@ -292,20 +297,11 @@
     var phase = 0;
 
     function draw() {
-      var rect = canvas.getBoundingClientRect();
-      var w = rect.width;
-      var h = rect.height;
+      var w = canvas.clientWidth;
+      var h = canvas.clientHeight;
       ctx.clearRect(0, 0, w, h);
 
-      ctx.strokeStyle = "rgba(158, 181, 222, 0.24)";
-      ctx.lineWidth = 1;
-      for (var gx = 0; gx < w; gx += 24) {
-        ctx.beginPath();
-        ctx.moveTo(gx, 0);
-        ctx.lineTo(gx, h);
-        ctx.stroke();
-      }
-
+      ctx.strokeStyle = "rgba(156, 180, 223, 0.24)";
       for (var gy = 0; gy < h; gy += 24) {
         ctx.beginPath();
         ctx.moveTo(0, gy);
@@ -313,27 +309,27 @@
         ctx.stroke();
       }
 
-      ctx.strokeStyle = "rgba(124, 140, 255, 0.85)";
       ctx.lineWidth = 2;
+      ctx.strokeStyle = "rgba(124, 140, 255, 0.82)";
       ctx.beginPath();
-      for (var x = 0; x <= w; x += 4) {
-        var y = h * 0.55 + Math.sin((x + phase) * 0.02) * 20 + Math.cos((x - phase) * 0.009) * 10;
+      for (var x = 0; x <= w; x += 3) {
+        var y = h * 0.52 + Math.sin((x + phase) * 0.022) * 20 + Math.cos((x - phase * 0.6) * 0.009) * 9;
         if (x === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
-      ctx.strokeStyle = "rgba(110, 231, 255, 0.95)";
-      ctx.lineWidth = 1.5;
+      ctx.lineWidth = 1.4;
+      ctx.strokeStyle = "rgba(105, 227, 255, 0.95)";
       ctx.beginPath();
-      for (x = 0; x <= w; x += 4) {
-        y = h * 0.5 + Math.cos((x + phase * 0.9) * 0.015) * 14;
+      for (x = 0; x <= w; x += 3) {
+        y = h * 0.5 + Math.cos((x + phase * 1.1) * 0.016) * 14;
         if (x === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
-      phase += 2.8;
+      phase += 2.5;
       requestAnimationFrame(draw);
     }
 
@@ -344,35 +340,49 @@
     var feed = document.getElementById("agent-feed");
     if (!feed) return;
 
-    var messages = [
-      "Parsing previous build notes...",
-      "Extracting lessons from failure modes...",
-      "Re-indexing architectural decisions...",
-      "Shipping concise write-up...",
-      "Comparing latency trade-offs...",
-      "Capturing context before memory decay...",
-      "Promoting signal, dropping noise...",
-      "Committing another iteration..."
+    var lines = [
+      "inspecting architecture decisions from prior notes...",
+      "compiling edge-case learnings from production runs...",
+      "distilling one practical principle per artifact...",
+      "updating memory graph with fresh context...",
+      "promoting durable insights to execution river...",
+      "scheduling next writing checkpoint..."
     ];
 
-    function pushLine(msg) {
+    function push(text) {
       var li = document.createElement("li");
-      li.textContent = "[" + new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) + "] " + msg;
+      li.textContent = "[" + new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) + "] " + text;
       feed.prepend(li);
-      while (feed.children.length > 6) {
+      while (feed.children.length > 7) {
         feed.removeChild(feed.lastChild);
       }
     }
 
-    for (var i = 0; i < 4; i++) {
-      pushLine(messages[i]);
-    }
+    for (var i = 0; i < 4; i++) push(lines[i]);
 
     var idx = 4;
     setInterval(function () {
-      pushLine(messages[idx % messages.length]);
+      push(lines[idx % lines.length]);
       idx += 1;
-    }, 2200);
+    }, 2400);
+  }
+
+  function initArtifactRail() {
+    var rail = document.getElementById("artifact-feed");
+    if (!rail) return;
+
+    var posts = document.querySelectorAll(".artifact-node");
+    rail.innerHTML = "";
+
+    var limit = Math.min(posts.length, 6);
+    for (var i = 0; i < limit; i++) {
+      var titleNode = posts[i].querySelector(".node-title");
+      if (!titleNode) continue;
+
+      var li = document.createElement("li");
+      li.innerHTML = "<a href=\"" + titleNode.getAttribute("href") + "\">" + titleNode.textContent + "</a>";
+      rail.appendChild(li);
+    }
   }
 
   function enhanceExecutionLog() {
@@ -382,7 +392,7 @@
     var statuses = [
       { text: "done", color: "var(--ok)" },
       { text: "stable", color: "var(--ok)" },
-      { text: "iterating", color: "var(--warn)" }
+      { text: "iterating", color: "#fbbf24" }
     ];
 
     for (var i = 0; i < entries.length; i++) {
@@ -390,18 +400,18 @@
       var title = entry.getAttribute("data-post-title") || "";
       var h = hashString(title);
 
-      var confidence = 70 + (h % 29);
-      var latency = ((h % 120) / 100 + 0.25).toFixed(2);
-      var metricSlot = entry.querySelector(".log-metrics");
-      if (metricSlot) {
-        metricSlot.textContent = "lat " + latency + "s | conf " + confidence + "%";
+      var confidence = 71 + (h % 27);
+      var latency = ((h % 110) / 100 + 0.28).toFixed(2);
+      var metric = entry.querySelector(".log-metrics");
+      if (metric) {
+        metric.textContent = "lat " + latency + "s | conf " + confidence + "%";
       }
 
       var status = statuses[h % statuses.length];
-      var statusNode = entry.querySelector(".log-status");
-      if (statusNode) {
-        statusNode.textContent = status.text;
-        statusNode.style.color = status.color;
+      var node = entry.querySelector(".log-status");
+      if (node) {
+        node.textContent = status.text;
+        node.style.color = status.color;
       }
     }
   }

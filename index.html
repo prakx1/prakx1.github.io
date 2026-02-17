@@ -3,93 +3,45 @@ layout: default
 ---
 
 <div id="home">
-  <section class="run-header">
-    <p class="kicker">Session prompt</p>
-    <h1>Build a better engineering brain.</h1>
+  <section class="turn user-turn">
+    <span class="turn-role">user</span>
+    <p class="turn-text">Build a personal intelligence system that keeps learning in public.</p>
+  </section>
+
+  <section class="turn model-turn">
+    <span class="turn-role">assistant</span>
+    <h1>{{ site.title }}</h1>
     <p class="intro-copy">{{ site.description }}</p>
+    <ul class="intent-lines">
+      <li>Document systems thinking before it disappears.</li>
+      <li>Turn messy project work into reusable insight.</li>
+      <li>Ship writing like iterative software.</li>
+    </ul>
   </section>
 
-  <section class="structure-switch" id="structure-switch">
-    <button type="button" class="structure-btn active" data-structure="latest">Latest-first</button>
-    <button type="button" class="structure-btn" data-structure="manifesto">Manifesto-first</button>
-    <button type="button" class="structure-btn" data-structure="stream">Stream-first</button>
-    <span id="mode-caption">Latest-first layout active</span>
-  </section>
-
-  <section class="manifesto-board mode-fragment" data-structure="manifesto">
-    <article class="signal-card manifesto-card">
-      <strong>Manifesto</strong>
-      <p>Write to think clearly. Publish to learn faster. Keep notes useful enough to reuse in real projects.</p>
-    </article>
-    <div class="signal-grid">
-      <article class="signal-card">
-        <strong>Principle #1</strong>
-        <p>Short posts with sharp takeaways beat long vague essays.</p>
-      </article>
-      <article class="signal-card">
-        <strong>Principle #2</strong>
-        <p>Include constraints, trade-offs, and what failed.</p>
-      </article>
-      <article class="signal-card">
-        <strong>Principle #3</strong>
-        <p>Make each post useful to your future self.</p>
-      </article>
-    </div>
-  </section>
-
-  <section class="stream-wrapper mode-fragment" data-structure="stream">
-    <section class="stream-grid">
-      <article class="stream-card prompt-card">
-        <span class="stream-role">user</span>
-        <p>“Document what you learn from real systems, before memory fades.”</p>
-      </article>
-      <article class="stream-card output-card">
-        <span class="stream-role">assistant</span>
-        <p>Logging notes that are practical, opinionated, and tested in production context.</p>
-        <div class="signal-grid">
-          <div class="signal-card">
-            <strong>Mission</strong>
-            <p>Capture signal from day-to-day engineering.</p>
-          </div>
-          <div class="signal-card">
-            <strong>Topics</strong>
-            <p>Systems, backend architecture, performance.</p>
-          </div>
-          <div class="signal-card">
-            <strong>Cadence</strong>
-            <p>Short notes, frequent commits.</p>
-          </div>
-        </div>
-      </article>
-    </section>
-
-    <section class="telemetry-stack">
-      <article class="telemetry-card">
-        <h2>Agent Feed</h2>
-        <ul class="agent-feed" id="agent-feed"></ul>
-      </article>
-      <article class="telemetry-card">
-        <h2>Runtime Pulse</h2>
-        <canvas id="runtime-pulse" width="1000" height="210"></canvas>
-      </article>
-    </section>
-  </section>
-
-  <section class="featured-posts">
-    <h2>Recent Outputs</h2>
-    <div class="featured-grid">
-      {% for post in site.posts limit:4 %}
-        <article class="post-card">
-          <p class="post-meta">{{ post.date | date: "%b %d, %Y" }}</p>
-          <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
-          <p>{{ post.excerpt | strip_html | truncate: 140 }}</p>
-        </article>
+  <section class="artifact-river">
+    <h2>Generated Artifacts</h2>
+    <ul class="artifact-river-list">
+      {% for post in site.posts limit:6 %}
+        <li class="artifact-node">
+          <span class="node-date">{{ post.date | date: "%Y-%m-%d" }}</span>
+          <a class="node-title" href="{{ post.url }}">{{ post.title }}</a>
+          <p>{{ post.excerpt | strip_html | truncate: 110 }}</p>
+        </li>
       {% endfor %}
+    </ul>
+  </section>
+
+  <section class="telemetry-layer">
+    <h2>Runtime Telemetry</h2>
+    <div class="telemetry-grid">
+      <ul class="agent-feed" id="agent-feed"></ul>
+      <canvas id="runtime-pulse" width="1000" height="240"></canvas>
     </div>
   </section>
 
-  <section class="post-archive run-log">
-    <h2>Execution Log</h2>
+  <section class="execution-river">
+    <h2>Execution River</h2>
     <ol class="posts log-list">
       {% for post in paginator.posts %}
         <li class="log-entry" data-post-title="{{ post.title | escape }}">

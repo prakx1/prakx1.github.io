@@ -111,62 +111,55 @@ layout: compress
     {% endif %}
   </head>
   <body>
-    <div class="app-shell">
-      <header class="command-bar">
+    <canvas id="ambient-field" aria-hidden="true"></canvas>
+    <div class="runtime-shell">
+      <header class="runtime-topbar">
         <a class="brand-mark" href="/">{{ site.title }}</a>
-        <div class="command-pill">session://personal-blog</div>
-        <nav class="quick-nav">
+        <div class="session-pulse">
+          <span class="pulse-dot"></span>
+          <span>live session</span>
+        </div>
+        <nav class="top-links">
           <a href="/">Home</a>
           <a href="/about/">About</a>
           <a href="/projects/">Projects</a>
           <a href="/feed.xml">Feed</a>
         </nav>
-        <button type="button" class="palette-trigger" id="palette-trigger">Cmd</button>
+        <button type="button" class="palette-trigger" id="palette-trigger">Cmd/Ctrl + K</button>
       </header>
-      <div class="command-input">
-        <span class="prompt">$</span>
-        <span class="typed-command" id="typed-command"></span>
-      </div>
 
-      <div class="workspace-grid">
-        <aside class="context-rail">
-          <section class="rail-block">
-            <strong>Operator</strong>
-            <h1 class="author-name"><a href="/">{{ site.author }}</a></h1>
-            {% if site.about %}
-              <div class="profile-about">{{ site.about }}</div>
-            {% endif %}
-            <div class="social">
-              <ul>
-                {% for link in site.social %}
-                  {% if link.link and link.link != "#" %}
-                    <li><a href="{{ link.link }}" target="_blank" rel="noopener noreferrer"><i class="fa {{ link.icon }}"></i></a></li>
-                  {% endif %}
-                {% endfor %}
-              </ul>
-            </div>
-          </section>
+      <div class="runtime-grid">
+        <aside class="memory-rail">
+          <p class="rail-label">Memory</p>
+          <h1 class="author-name"><a href="/">{{ site.author }}</a></h1>
+          {% if site.about %}
+            <p class="profile-about">{{ site.about }}</p>
+          {% endif %}
 
-          <section class="rail-block">
-            <strong>Commands</strong>
-            <ul class="sidebar-nav">
-              <li><a href="/">Home</a></li>
-              {% for i in site.urls %}
-                <li><a class="about" href="{{ i.url }}">{{ i.text }}</a></li>
+          <ul class="memory-nav">
+            <li><a href="/">root/home</a></li>
+            {% for i in site.urls %}
+              <li><a href="{{ i.url }}">root{{ i.url }}</a></li>
+            {% endfor %}
+          </ul>
+
+          <div class="search" id="js-search">
+            <input type="text" placeholder="query memory..." class="search__input form-control" id="js-search__input">
+            <ul class="search__results" id="js-search__results"></ul>
+          </div>
+
+          <div class="social">
+            <ul>
+              {% for link in site.social %}
+                {% if link.link and link.link != "#" %}
+                  <li><a href="{{ link.link }}" target="_blank" rel="noopener noreferrer"><i class="fa {{ link.icon }}"></i></a></li>
+                {% endif %}
               {% endfor %}
             </ul>
-          </section>
-
-          <section class="rail-block">
-            <strong>Search Index</strong>
-            <div class="search" id="js-search">
-              <input type="text" placeholder="find note, topic, keyword..." class="search__input form-control" id="js-search__input">
-              <ul class="search__results" id="js-search__results"></ul>
-            </div>
-          </section>
+          </div>
         </aside>
 
-        <main class="generation-canvas">
+        <main class="conversation-core">
           {{ content }}
           <footer>
             &copy; {{ site.author }}
@@ -176,6 +169,16 @@ layout: compress
             - Powered by Jekyll.
           </footer>
         </main>
+
+        <aside class="artifact-rail">
+          <p class="rail-label">Artifacts</p>
+          <ul id="artifact-feed" class="artifact-feed"></ul>
+        </aside>
+      </div>
+
+      <div class="composer-dock" id="composer-dock">
+        <span class="prompt">$</span>
+        <span class="typed-command" id="typed-command"></span>
       </div>
     </div>
 

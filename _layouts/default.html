@@ -111,58 +111,70 @@ layout: compress
     {% endif %}
   </head>
   <body data-theme="cyber">
-    <div class="container">
-      <div class="col-sm-3">
-        <div class="fixed-condition">
-          <h1 class="author-name"><a href="/">{{ site.author }}</a></h1>
-          {% if site.about %}
-            <div class="profile-about">
-              {{ site.about }}
+    <div class="site-frame">
+      <header class="site-topbar">
+        <a class="brand-mark" href="/">{{ site.title }}</a>
+        <nav class="quick-nav">
+          <a href="/">Home</a>
+          <a href="/about/">About</a>
+          <a href="/projects/">Projects</a>
+          <a href="/feed.xml">RSS</a>
+        </nav>
+        <div class="theme-switcher">
+          <button type="button" class="theme-btn" data-theme="cyber">Cyber</button>
+          <button type="button" class="theme-btn" data-theme="swiss">Swiss</button>
+          <button type="button" class="theme-btn" data-theme="retro">Retro</button>
+        </div>
+      </header>
+
+      <div class="site-shell">
+        <aside class="site-rail">
+          <section class="rail-card">
+            <h1 class="author-name"><a href="/">{{ site.author }}</a></h1>
+            {% if site.about %}
+              <div class="profile-about">{{ site.about }}</div>
+            {% endif %}
+            <div class="social">
+              <ul>
+                {% for link in site.social %}
+                  {% if link.link and link.link != "#" %}
+                    <li><a href="{{ link.link }}" target="_blank" rel="noopener noreferrer"><i class="fa {{ link.icon }}"></i></a></li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
             </div>
-          {% endif %}
-          <div class="social">
-            <ul>
-              {% for link in site.social %}
-                {% if link.link and link.link != "#" %}
-                  <li><a href="{{ link.link }}" target="_blank" rel="noopener noreferrer"><i class="fa {{ link.icon }}"></i></a></li>
-                {% endif %}
+          </section>
+
+          <section class="rail-card">
+            <strong>Search</strong>
+            <div class="search" id="js-search">
+              <input type="text" placeholder="type to search..." class="search__input form-control" id="js-search__input">
+              <ul class="search__results" id="js-search__results"></ul>
+            </div>
+          </section>
+
+          <section class="rail-card">
+            <strong>Navigation</strong>
+            <ul class="sidebar-nav">
+              <li><a href="/">Home</a></li>
+              {% for i in site.urls %}
+                <li><a class="about" href="{{ i.url }}">{{ i.text }}</a></li>
               {% endfor %}
             </ul>
-          </div>
-          <div class="search" id="js-search">
-            <input type="text" placeholder="(sitemap)~$ type to search" class="search__input form-control" id="js-search__input">
-            <ul class="search__results" id="js-search__results"></ul>
-          </div>
-          <hr />
-          <ul class="sidebar-nav">
-            <strong>Navigation</strong>
-            <li><a href="/">Home</a></li>
-            {% for i in site.urls %}
-              <li><a class="about" href="{{ i.url }}">{{ i.text }}</a></li>
-            {% endfor %}
-          </ul>
-          <hr />
-          <div class="theme-switcher">
-            <strong>Theme Lab</strong>
-            <button type="button" class="theme-btn" data-theme="cyber">Cyber</button>
-            <button type="button" class="theme-btn" data-theme="swiss">Swiss</button>
-            <button type="button" class="theme-btn" data-theme="retro">Retro</button>
-          </div>
-        </div>
-        <!-- end /.fixed-condition -->
+          </section>
+        </aside>
+
+        <main class="main-layout">
+          {{ content }}
+          <footer>
+            &copy; {{ site.author }}
+            {% if site.github %}
+              - <a href="{{ site.github }}">{{ site.github }}</a> - Powered by Jekyll.
+            {% endif %}
+          </footer>
+        </main>
       </div>
-      <div class="col-sm-8 col-offset-1 main-layout">
-        {{ content }}
-        <footer>
-          &copy; {{ site.author }}
-          {% if site.github %}
-            - <a href="{{ site.github }}">{{ site.github }}</a> - Powered by Jekyll.
-          {% endif %}
-        </footer>
-      </div>
-      <!-- end /.col-sm-8 -->
     </div>
-    <!-- end /.container -->
 
     <!-- Bootstrap core JavaScript -->
     <!-- Placed at the end of the document so the pages load faster -->

@@ -114,7 +114,7 @@ layout: compress
     <div class="app-shell">
       <header class="command-bar">
         <a class="brand-mark" href="/">{{ site.title }}</a>
-        <div class="command-pill">Session: personal-site</div>
+        <div class="command-pill">session://personal-blog</div>
         <nav class="quick-nav">
           <a href="/">Home</a>
           <a href="/about/">About</a>
@@ -122,6 +122,10 @@ layout: compress
           <a href="/feed.xml">Feed</a>
         </nav>
       </header>
+      <div class="command-input">
+        <span class="prompt">$</span>
+        <span class="typed-command">publish --notes --in-public --build-in-progress</span>
+      </div>
 
       <div class="workspace-grid">
         <aside class="context-rail">
@@ -143,7 +147,7 @@ layout: compress
           </section>
 
           <section class="rail-block">
-            <strong>Jump To</strong>
+            <strong>Commands</strong>
             <ul class="sidebar-nav">
               <li><a href="/">Home</a></li>
               {% for i in site.urls %}

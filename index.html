@@ -3,46 +3,58 @@ layout: default
 ---
 
 <div id="home">
-  <section class="home-intro">
-    <p class="kicker">Prompt > Build a life-long engineering notebook</p>
-    <h1>{{ site.title }}</h1>
+  <section class="run-header">
+    <p class="kicker">Session prompt</p>
+    <h1>Build a better engineering brain.</h1>
     <p class="intro-copy">{{ site.description }}</p>
-    <div class="signal-grid">
-      <article class="signal-card">
-        <strong>Mission</strong>
-        <p>Capture practical ideas from real projects.</p>
-      </article>
-      <article class="signal-card">
-        <strong>Topics</strong>
-        <p>Backend systems, performance, and design.</p>
-      </article>
-      <article class="signal-card">
-        <strong>Cadence</strong>
-        <p>Ship notes frequently, keep them useful.</p>
-      </article>
-    </div>
+  </section>
+
+  <section class="stream-grid">
+    <article class="stream-card prompt-card">
+      <span class="stream-role">user</span>
+      <p>“Document what you learn from real systems, before memory fades.”</p>
+    </article>
+    <article class="stream-card output-card">
+      <span class="stream-role">assistant</span>
+      <p>Logging notes that are practical, opinionated, and tested in production context.</p>
+      <div class="signal-grid">
+        <div class="signal-card">
+          <strong>Mission</strong>
+          <p>Capture signal from day-to-day engineering.</p>
+        </div>
+        <div class="signal-card">
+          <strong>Topics</strong>
+          <p>Systems, backend architecture, performance.</p>
+        </div>
+        <div class="signal-card">
+          <strong>Cadence</strong>
+          <p>Short notes, frequent commits.</p>
+        </div>
+      </div>
+    </article>
   </section>
 
   <section class="featured-posts">
     <h2>Recent Outputs</h2>
     <div class="featured-grid">
-      {% for post in site.posts limit:3 %}
+      {% for post in site.posts limit:4 %}
         <article class="post-card">
           <p class="post-meta">{{ post.date | date: "%b %d, %Y" }}</p>
           <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
-          <p>{{ post.excerpt | strip_html | truncate: 150 }}</p>
+          <p>{{ post.excerpt | strip_html | truncate: 140 }}</p>
         </article>
       {% endfor %}
     </div>
   </section>
 
-  <section class="post-archive">
+  <section class="post-archive run-log">
     <h2>Execution Log</h2>
-    <ol class="posts">
+    <ol class="posts log-list">
       {% for post in paginator.posts %}
         <li>
+          <span class="log-date">{{ post.date | date: "%Y-%m-%d" }}</span>
           <a href="{{ post.url }}">{{ post.title }}</a>
-          <span>{{ post.date | date: "%b %d, %Y" }}</span>
+          <span class="log-status">done</span>
         </li>
       {% endfor %}
     </ol>

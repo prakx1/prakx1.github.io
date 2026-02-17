@@ -1,20 +1,40 @@
-SWIQ.ai Commercial License
+# Notebook (Astro)
 
-Copyright (c) 2024 SWIQ.ai
+Personal site and blog built with Astro.
 
-All rights reserved.
+## Stack
 
-1. Grant of License: The licensor grants the licensee a non-exclusive, non-transferable, revocable license to use the Software for internal business purposes only. The licensee may not sell, lease, or otherwise distribute the Software.
+- Astro 5
+- Markdown content collections
+- GitHub Pages deployment via GitHub Actions
 
-2. Restrictions: The licensee shall not:
-   a. Modify, translate, adapt, or otherwise create derivative works or improvements of the Software.
-   b. Reverse engineer, decompile, disassemble, or otherwise attempt to derive the source code of the Software.
-   c. Use the Software for any commercial purpose without the prior written consent of the licensor.
+## Local development
 
-3. Termination: This license is effective until terminated. The licensee's rights under this license will terminate automatically without notice from the licensor if the licensee fails to comply with any term(s) of this license.
+```bash
+npm install
+npm run dev
+```
 
-4. Disclaimer of Warranties: The Software is provided "as is" without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and noninfringement.
+Build static site:
 
-5. Limitation of Liability: In no event shall the licensor be liable for any special, incidental, indirect, or consequential damages whatsoever arising out of the use of or inability to use the Software.
+```bash
+ASTRO_TELEMETRY_DISABLED=1 npm run build
+```
 
-For permission requests, contact prax@gmail.com.
+## Content
+
+- Blog notes: `src/content/blog/*.md`
+- Project pages: `src/content/project/*.md`
+- Project listing data: `src/data/projects.json`
+- Shared styles: `src/styles/global.css`
+
+## Deployment (GitHub Pages)
+
+This repo deploys using `.github/workflows/deploy.yml`.
+
+1. Go to `Settings -> Pages` in GitHub.
+2. Set `Source` to `GitHub Actions`.
+3. Push to `master`.
+4. Wait for the `Deploy Astro to GitHub Pages` workflow to finish.
+
+If deployment is not updating, check the `Actions` tab for build errors.

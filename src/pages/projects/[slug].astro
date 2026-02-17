@@ -1,0 +1,46 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("project");
+
+  return projects.map((project) => ({
+    params: { slug: project.data.slug ?? project.slug },
+    props: { project }
+  }));
+}
+
+const { project } = Astro.props as { project: CollectionEntry<"project"> };
+const { Content } = await project.render();
+---
+
+<BaseLayout title={project.data.title} activePath="/projects/">
+  <article class="article-shell prose">
+    <p class="eyebrow">Project</p>
+    <h1>{project.data.title}</h1>
+
+    {project.data.image && (
+      <img
+        src={`/static/projects/${project.data.image}`}
+        alt={project.data.title}
+        class="project-hero"
+      />
+    )}
+
+    <div class="chip-row">
+      {(project.data.tags ?? []).map((tag) => (
+        <span class="chip">{tag}</span>
+      ))}
+    </div>
+
+    {project.data.externalUrl && (
+      <p>
+        <a href={project.data.externalUrl} target="_blank" rel="noopener noreferrer">Open live project</a>
+      </p>
+    )}
+
+    <Content />
+  </article>
+</BaseLayout>

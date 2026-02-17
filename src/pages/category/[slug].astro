@@ -1,0 +1,55 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { categoryToSlug, formatDate, slugToCategoryLabel } from "../../lib/content";
+
+interface Props {
+  notes: CollectionEntry<"blog">[];
+  label: string;
+}
+
+export async function getStaticPaths() {
+  const notes = await getCollection("blog", ({ data }) => !data.draft);
+  const map = new Map<string, { label: string; notes: CollectionEntry<"blog">[] }>();
+
+  for (const note of notes) {
+    for (const category of note.data.categories) {
+      const slug = categoryToSlug(category);
+      const existing = map.get(slug);
+      if (existing) {
+        existing.notes.push(note);
+      } else {
+        map.set(slug, { label: category, notes: [note] });
+      }
+    }
+  }
+
+  return [...map.entries()].map(([slug, value]) => ({
+    params: { slug },
+    props: {
+      label: value.label,
+      notes: value.notes.sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+    }
+  }));
+}
+
+const { notes, label } = Astro.props as Props;
+const heading = label || slugToCategoryLabel(Astro.params.slug ?? "");
+---
+
+<BaseLayout title={`Category: ${heading}`} activePath="/">
+  <section class="article-shell">
+    <p class="eyebrow">Category</p>
+    <h1>{heading}</h1>
+
+    <div class="category-list">
+      {notes.map((note) => (
+        <article>
+          <a href={`/notes/${note.slug}/`}>{note.data.title}</a>
+          <span>{formatDate(note.data.date)}</span>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

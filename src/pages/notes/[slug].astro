@@ -1,0 +1,68 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { categoryToSlug, formatDate } from "../../lib/content";
+
+export async function getStaticPaths() {
+  const notes = await getCollection("blog", ({ data }) => !data.draft);
+
+  return notes.map((note) => ({
+    params: { slug: note.slug },
+    props: { note }
+  }));
+}
+
+const { note } = Astro.props as { note: CollectionEntry<"blog"> };
+const { Content } = await note.render();
+
+const allNotes = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+
+const currentIndex = allNotes.findIndex((item) => item.slug === note.slug);
+const newer = currentIndex > 0 ? allNotes[currentIndex - 1] : null;
+const older = currentIndex >= 0 && currentIndex < allNotes.length - 1 ? allNotes[currentIndex + 1] : null;
+
+const related = allNotes
+  .filter(
+    (item) =>
+      item.slug !== note.slug &&
+      item.data.categories.some((category) => note.data.categories.includes(category))
+  )
+  .slice(0, 3);
+---
+
+<BaseLayout title={note.data.title} description={note.data.description} activePath="/">
+  <article class="article-shell prose">
+    <p class="eyebrow">Note</p>
+    <h1>{note.data.title}</h1>
+
+    <div class="note-top-meta">
+      <span class="note-meta">{formatDate(note.data.date)}</span>
+      <div class="chip-row">
+        {note.data.categories.map((category) => (
+          <a class="chip" href={`/category/${categoryToSlug(category)}/`}>{category}</a>
+        ))}
+      </div>
+    </div>
+
+    <Content />
+
+    {related.length > 0 && (
+      <section class="related-list">
+        <h2>Related notes</h2>
+        <ul>
+          {related.map((item) => (
+            <li><a href={`/notes/${item.slug}/`}>{item.data.title}</a></li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <nav class="pager">
+      {newer ? <a href={`/notes/${newer.slug}/`}>&larr; {newer.data.title}</a> : <span></span>}
+      {older ? <a href={`/notes/${older.slug}/`}>{older.data.title} &rarr;</a> : <span></span>}
+    </nav>
+  </article>
+</BaseLayout>

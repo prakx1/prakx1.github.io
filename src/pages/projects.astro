@@ -1,0 +1,62 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import projectsData from "../data/projects.json";
+
+interface ProjectItem {
+  slug?: string;
+  name: string;
+  image: string;
+  url?: string;
+  date?: string;
+  tags?: string[];
+}
+
+const projectPages = await getCollection("project");
+const internalBySlug = new Set(projectPages.map((entry) => entry.data.slug ?? entry.slug));
+const projects = projectsData as ProjectItem[];
+---
+
+<BaseLayout title="Projects" activePath="/projects/">
+  <section class="article-shell">
+    <p class="eyebrow">Projects</p>
+    <h1>Selected work and experiments</h1>
+    <p class="hero-copy">
+      Most of my work focuses on backend systems, data-heavy applications,
+      and practical engineering tooling.
+    </p>
+
+    <div class="project-grid">
+      {projects.map((project) => {
+        const internalPath = project.slug ? `/projects/${project.slug}/` : null;
+        const hasInternal = project.slug ? internalBySlug.has(project.slug) : false;
+        const hasExternal = Boolean(project.url && project.url !== "#");
+        const link = hasInternal ? internalPath : hasExternal ? project.url : null;
+        const external = !hasInternal && hasExternal;
+
+        return (
+          <article class="project-card">
+            <img src={`/static/projects/${project.image}`} alt={project.name} loading="lazy" />
+            <h3>
+              {link ? (
+                <a href={link} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}>
+                  {project.name}
+                </a>
+              ) : (
+                project.name
+              )}
+            </h3>
+
+            <div class="chip-row">
+              {(project.tags ?? []).map((tag) => (
+                <span class="chip">{tag}</span>
+              ))}
+            </div>
+
+            <p class="note-meta">{project.date}</p>
+          </article>
+        );
+      })}
+    </div>
+  </section>
+</BaseLayout>

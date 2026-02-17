@@ -184,24 +184,6 @@ a:hover {
   background: rgba(27, 43, 68, 0.72);
 }
 
-.shell-grid {
-  margin-top: 16px;
-  display: grid;
-  grid-template-columns: 270px minmax(0, 1fr);
-  gap: 20px;
-}
-
-.signal-rail {
-  position: sticky;
-  top: 86px;
-  align-self: start;
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  background: var(--surface);
-  padding: 18px;
-}
-
-.rail-kicker,
 .eyebrow,
 .note-meta {
   margin: 0 0 7px;
@@ -210,44 +192,6 @@ a:hover {
   letter-spacing: 0.1em;
   font-size: 0.63rem;
   color: var(--muted);
-}
-
-.signal-rail h2 {
-  margin: 0 0 14px;
-  font-family: var(--display);
-  font-size: 1.33rem;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-}
-
-.signal-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 10px;
-}
-
-.signal-list li {
-  border-left: 1px solid var(--line);
-  padding-left: 10px;
-}
-
-.signal-list span {
-  display: inline-block;
-  margin-bottom: 2px;
-  font-family: var(--mono);
-  color: var(--accent-alt);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.62rem;
-}
-
-.signal-list p {
-  margin: 0;
-  color: #bccbe2;
-  font-size: 0.91rem;
-  line-height: 1.45;
 }
 
 .rail-links {
@@ -274,7 +218,10 @@ a:hover {
 }
 
 .content-stage {
+  margin-top: 16px;
   min-width: 0;
+  width: min(100%, 980px);
+  margin-inline: auto;
 }
 
 .hero-plane,
@@ -787,14 +734,6 @@ a.chip-tag:hover {
 }
 
 @media (max-width: 1060px) {
-  .shell-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .signal-rail {
-    position: static;
-  }
-
   .about-layout {
     grid-template-columns: 1fr;
   }
@@ -859,8 +798,7 @@ a.chip-tag:hover {
 
   .hero-plane,
   .reading-shell,
-  .info-panel,
-  .signal-rail {
+  .info-panel {
     border-radius: 16px;
   }
 

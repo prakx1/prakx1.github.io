@@ -72,43 +72,17 @@ const nav = [
         </div>
       </header>
 
-      <div class="shell-grid">
-        <aside class="signal-rail">
-          <p class="rail-kicker">Signal</p>
-          <h2>From production to publish.</h2>
-          <ul class="signal-list">
-            <li>
-              <span>Now</span>
-              <p>Turning real incidents and fixes into reusable notes.</p>
-            </li>
-            <li>
-              <span>Focus</span>
-              <p>Systems design, performance tuning, and practical debugging.</p>
-            </li>
-            <li>
-              <span>Style</span>
-              <p>Clear, compact writing with examples that can be reused fast.</p>
-            </li>
-          </ul>
+      <main class="content-stage">
+        <slot />
 
-          <div class="rail-links">
-            <a href="https://github.com/prakx1" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a href="mailto:prakashsinghcs100@gmail.com">Email</a>
+        <footer class="site-footer">
+          <p>Built on Astro. Maintained as a living engineering notebook.</p>
+          <div>
+            <a href="/feed.xml">RSS</a>
+            <a href="/about/">Contact</a>
           </div>
-        </aside>
-
-        <main class="content-stage">
-          <slot />
-
-          <footer class="site-footer">
-            <p>Built on Astro. Maintained as a living engineering notebook.</p>
-            <div>
-              <a href="/feed.xml">RSS</a>
-              <a href="/about/">Contact</a>
-            </div>
-          </footer>
-        </main>
-      </div>
+        </footer>
+      </main>
     </div>
   </body>
 </html>

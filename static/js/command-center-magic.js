@@ -1,4 +1,9 @@
 (function () {
+  var structureController = {
+    setMode: function () {},
+    getMode: function () { return "latest"; }
+  };
+
   function ready(fn) {
     if (document.readyState !== "loading") {
       fn();
@@ -17,12 +22,76 @@
   }
 
   ready(function () {
+    structureController = initStructureSwitcher();
     initTypedPrompt();
-    initCommandPalette();
+    initCommandPalette(structureController);
     initRuntimePulse();
     initAgentFeed();
     enhanceExecutionLog();
   });
+
+  function initStructureSwitcher() {
+    var home = document.getElementById("home");
+    var buttons = document.querySelectorAll(".structure-btn");
+    var caption = document.getElementById("mode-caption");
+    var key = "structure_mode";
+    var labels = {
+      latest: "Latest-first layout active",
+      manifesto: "Manifesto-first layout active",
+      stream: "Stream-first layout active"
+    };
+
+    if (!home || !buttons.length) {
+      return structureController;
+    }
+
+    function setMode(mode) {
+      if (!labels[mode]) mode = "latest";
+      home.setAttribute("data-structure", mode);
+
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].classList.toggle("active", buttons[i].getAttribute("data-structure") === mode);
+      }
+
+      if (caption) caption.textContent = labels[mode];
+
+      try {
+        localStorage.setItem(key, mode);
+      } catch (e) {
+        // Ignore storage restrictions.
+      }
+
+      if (mode === "stream") {
+        setTimeout(function () {
+          window.dispatchEvent(new Event("resize"));
+        }, 80);
+      }
+    }
+
+    function getMode() {
+      return home.getAttribute("data-structure") || "latest";
+    }
+
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].addEventListener("click", function () {
+        setMode(this.getAttribute("data-structure"));
+      });
+    }
+
+    var saved = "latest";
+    try {
+      saved = localStorage.getItem(key) || "latest";
+    } catch (e) {
+      saved = "latest";
+    }
+
+    setMode(saved);
+
+    return {
+      setMode: setMode,
+      getMode: getMode
+    };
+  }
 
   function initTypedPrompt() {
     var el = document.getElementById("typed-command");
@@ -65,7 +134,7 @@
     tick();
   }
 
-  function initCommandPalette() {
+  function initCommandPalette(structure) {
     var overlay = document.getElementById("command-palette");
     var input = document.getElementById("palette-input");
     var list = document.getElementById("palette-results");
@@ -80,6 +149,9 @@
       { label: "Go: Feed", run: function () { location.href = "/feed.xml"; } },
       { label: "View: Recent Outputs", run: function () { scrollToHeading("Recent Outputs"); } },
       { label: "View: Execution Log", run: function () { scrollToHeading("Execution Log"); } },
+      { label: "Structure: Latest-first", run: function () { structure.setMode("latest"); } },
+      { label: "Structure: Manifesto-first", run: function () { structure.setMode("manifesto"); } },
+      { label: "Structure: Stream-first", run: function () { structure.setMode("stream"); } },
       { label: "Mode: Toggle Zen", run: function () { document.body.classList.toggle("zen-mode"); } },
       { label: "Action: Surprise Me", run: randomPost }
     ];
@@ -182,7 +254,7 @@
     function scrollToHeading(text) {
       var headers = document.querySelectorAll("h2");
       for (var i = 0; i < headers.length; i++) {
-        if (headers[i].textContent.trim() === text) {
+        if (headers[i].textContent.trim() === text && headers[i].getClientRects().length) {
           headers[i].scrollIntoView({ behavior: "smooth", block: "start" });
           return;
         }

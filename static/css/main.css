@@ -291,6 +291,65 @@ hr {
   max-width: 64ch;
 }
 
+.structure-switch {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.structure-btn {
+  background: var(--panel-soft);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text-soft);
+  cursor: pointer;
+  font-family: var(--mono-font);
+  font-size: 0.7rem;
+  letter-spacing: 0.07em;
+  padding: 6px 9px;
+  text-transform: uppercase;
+}
+
+.structure-btn.active,
+.structure-btn:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+#mode-caption {
+  color: var(--text-soft);
+  font-family: var(--mono-font);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  margin-left: 4px;
+}
+
+.mode-fragment {
+  display: none;
+  margin-top: 10px;
+}
+
+#home[data-structure="manifesto"] .mode-fragment[data-structure="manifesto"] {
+  display: block;
+}
+
+#home[data-structure="stream"] .mode-fragment[data-structure="stream"] {
+  display: block;
+}
+
+.manifesto-board {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel-soft);
+  padding: 10px;
+}
+
+.manifesto-card {
+  margin-bottom: 8px;
+}
+
 .stream-grid {
   display: grid;
   gap: 10px;

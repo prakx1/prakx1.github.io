@@ -2,86 +2,56 @@
 layout: default
 ---
 
-<div id="home">
-  <section class="turn user-turn">
-    <span class="turn-role">user</span>
-    <p class="turn-text">Build a personal intelligence system that keeps learning in public.</p>
-  </section>
+<div id="home" class="timeline-home">
+  <ol class="timeline-feed" id="timeline-feed">
+    <li class="timeline-turn turn-system">
+      <span class="turn-meta">system</span>
+      <h1>{{ site.title }}</h1>
+      <p>{{ site.description }}</p>
+    </li>
 
-  <section class="turn model-turn">
-    <span class="turn-role">assistant</span>
-    <h1>{{ site.title }}</h1>
-    <p class="intro-copy">{{ site.description }}</p>
-    <ul class="intent-lines">
-      <li>Document systems thinking before it disappears.</li>
-      <li>Turn messy project work into reusable insight.</li>
-      <li>Ship writing like iterative software.</li>
-    </ul>
-  </section>
+    <li class="timeline-turn turn-user">
+      <span class="turn-meta">user</span>
+      <p>Build an engineering memory that grows from real projects, not just polished highlights.</p>
+    </li>
 
-  <section class="artifact-river">
-    <h2>Generated Artifacts</h2>
-    <ul class="artifact-river-list">
-      {% for post in site.posts limit:6 %}
-        <li class="artifact-node">
-          <span class="node-date">{{ post.date | date: "%Y-%m-%d" }}</span>
-          <a class="node-title" href="{{ post.url }}">{{ post.title }}</a>
-          <p>{{ post.excerpt | strip_html | truncate: 110 }}</p>
-        </li>
-      {% endfor %}
-    </ul>
-  </section>
+    <li class="timeline-turn turn-assistant">
+      <span class="turn-meta">assistant</span>
+      <p>Acknowledged. Streaming artifacts from lived experience, design tradeoffs, and practical debugging work.</p>
+      <ul class="intent-lines">
+        <li>Capture decisions while context is fresh.</li>
+        <li>Preserve failed paths and why they failed.</li>
+        <li>Convert work into reusable playbooks.</li>
+      </ul>
+    </li>
 
-  <section class="telemetry-layer">
-    <h2>Runtime Telemetry</h2>
-    <div class="telemetry-grid">
-      <ul class="agent-feed" id="agent-feed"></ul>
-      <canvas id="runtime-pulse" width="1000" height="240"></canvas>
-    </div>
-  </section>
+    <li class="timeline-turn turn-telemetry" id="telemetry-turn">
+      <span class="turn-meta">runtime telemetry</span>
+      <div class="telemetry-grid">
+        <ul class="agent-feed" id="agent-feed"></ul>
+        <canvas id="runtime-pulse" width="1000" height="240"></canvas>
+      </div>
+    </li>
 
-  <section class="execution-river">
-    <h2>Execution River</h2>
-    <ol class="posts log-list">
-      {% for post in paginator.posts %}
-        <li class="log-entry" data-post-title="{{ post.title | escape }}">
-          <span class="log-date">{{ post.date | date: "%Y-%m-%d" }}</span>
-          <a class="log-title" href="{{ post.url }}">{{ post.title }}</a>
+    {% for post in site.posts %}
+      <li class="timeline-turn turn-artifact{% if forloop.index > 7 %} is-hidden{% endif %}" data-post-title="{{ post.title | escape }}">
+        <span class="turn-meta">artifact · {{ post.date | date: "%Y-%m-%d" }}</span>
+        <h3><a class="log-title" href="{{ post.url }}">{{ post.title }}</a></h3>
+        <p class="artifact-summary">{{ post.excerpt | strip_html | truncate: 170 }}</p>
+        <div class="turn-signals">
           <span class="log-metrics"></span>
           <span class="log-status">done</span>
-        </li>
-      {% endfor %}
-    </ol>
-  </section>
+        </div>
+        <div class="turn-actions">
+          <button class="expand-turn" type="button">Expand context</button>
+          <a href="{{ post.url }}">Open full note</a>
+        </div>
+        <div class="turn-detail">
+          <p>{{ post.content | strip_html | truncate: 620 }}</p>
+        </div>
+      </li>
+    {% endfor %}
+  </ol>
 
-  <!-- Pagination links -->
-  {% if paginator.total_pages > 1 %}
-    <ul class="pagination pagination-sm">
-      {% if paginator.previous_page %}
-        <li><a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&laquo;</a></li>
-      {% else %}
-        <li class="disabled"><span aria-hidden="true">&laquo;</span></li>
-      {% endif %}
-
-      <li><a href="/">First</a></li>
-
-      {% for page in (1..paginator.total_pages) %}
-        {% if page == paginator.page %}
-          <li class="active"><a>{{ page }}<span class="sr-only">(current)</span></a></li>
-        {% elsif page == 1 %}
-          <li><a href="/">{{ page }}</a></li>
-        {% else %}
-          <li><a href="{{ site.paginate_path | prepend: site.baseurl | replace: '//', '/' | replace: ':num', page }}">{{ page }}</a></li>
-        {% endif %}
-      {% endfor %}
-
-      <li><a href="/page/{{ paginator.total_pages }}/">Last</a></li>
-
-      {% if paginator.next_page %}
-        <li><a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">&raquo;</a></li>
-      {% else %}
-        <li class="disabled"><span>&raquo;</span></li>
-      {% endif %}
-    </ul>
-  {% endif %}
+  <div id="timeline-sentinel" class="timeline-sentinel">Loading older turns...</div>
 </div><!-- end #home -->

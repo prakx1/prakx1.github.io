@@ -24,6 +24,7 @@
     initAgentFeed();
     initArtifactRail();
     enhanceExecutionLog();
+    initTimelineFlow();
   });
 
   function initTypedPrompt() {
@@ -158,9 +159,10 @@
       { label: "Go: About", run: function () { location.href = "/about/"; } },
       { label: "Go: Projects", run: function () { location.href = "/projects/"; } },
       { label: "Go: Feed", run: function () { location.href = "/feed.xml"; } },
-      { label: "View: Generated Artifacts", run: function () { scrollToHeading("Generated Artifacts"); } },
-      { label: "View: Runtime Telemetry", run: function () { scrollToHeading("Runtime Telemetry"); } },
-      { label: "View: Execution River", run: function () { scrollToHeading("Execution River"); } },
+      { label: "View: Intro Turn", run: function () { scrollToSelector(".turn-system"); } },
+      { label: "View: Runtime Telemetry", run: function () { scrollToSelector("#telemetry-turn"); } },
+      { label: "View: Latest Artifact", run: function () { scrollToSelector(".turn-artifact"); } },
+      { label: "View: Deep Timeline", run: function () { scrollToSelector("#timeline-sentinel"); } },
       { label: "Mode: Toggle Zen", run: function () { document.body.classList.toggle("zen-mode"); } },
       { label: "Action: Surprise Post", run: randomPost }
     ];
@@ -255,18 +257,14 @@
       }
     });
 
-    function scrollToHeading(label) {
-      var heads = document.querySelectorAll("h2");
-      for (var i = 0; i < heads.length; i++) {
-        if (heads[i].textContent.trim() === label && heads[i].getClientRects().length) {
-          heads[i].scrollIntoView({ behavior: "smooth", block: "start" });
-          return;
-        }
-      }
+    function scrollToSelector(selector) {
+      var node = document.querySelector(selector);
+      if (!node) return;
+      node.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
     function randomPost() {
-      var links = Array.prototype.slice.call(document.querySelectorAll(".log-title, .node-title, .posts a"));
+      var links = Array.prototype.slice.call(document.querySelectorAll(".turn-artifact .log-title, .log-title, .posts a"));
       if (!links.length) return;
       var pick = links[Math.floor(Math.random() * links.length)];
       if (pick && pick.getAttribute("href")) {
@@ -371,17 +369,24 @@
     var rail = document.getElementById("artifact-feed");
     if (!rail) return;
 
-    var posts = document.querySelectorAll(".artifact-node");
+    var posts = document.querySelectorAll(".turn-artifact .log-title");
     rail.innerHTML = "";
 
-    var limit = Math.min(posts.length, 6);
-    for (var i = 0; i < limit; i++) {
-      var titleNode = posts[i].querySelector(".node-title");
-      if (!titleNode) continue;
+    if (!posts.length) {
+      posts = document.querySelectorAll(".log-title, .memory-nav a");
+    }
 
+    var seen = {};
+    var count = 0;
+    for (var i = 0; i < posts.length && count < 6; i++) {
+      var titleNode = posts[i];
+      var href = titleNode.getAttribute("href");
+      if (!href || seen[href]) continue;
+      seen[href] = true;
       var li = document.createElement("li");
-      li.innerHTML = "<a href=\"" + titleNode.getAttribute("href") + "\">" + titleNode.textContent + "</a>";
+      li.innerHTML = "<a href=\"" + href + "\">" + titleNode.textContent + "</a>";
       rail.appendChild(li);
+      count += 1;
     }
   }
 
@@ -413,6 +418,49 @@
         node.textContent = status.text;
         node.style.color = status.color;
       }
+    }
+  }
+
+  function initTimelineFlow() {
+    var turns = document.querySelectorAll(".timeline-turn.turn-artifact");
+    if (!turns.length) return;
+
+    var sentinel = document.getElementById("timeline-sentinel");
+    var batch = 6;
+
+    function revealBatch() {
+      var hidden = document.querySelectorAll(".timeline-turn.turn-artifact.is-hidden");
+      var max = Math.min(batch, hidden.length);
+      for (var i = 0; i < max; i++) {
+        hidden[i].classList.remove("is-hidden");
+      }
+
+      if (!document.querySelector(".timeline-turn.turn-artifact.is-hidden") && sentinel) {
+        sentinel.textContent = "End of timeline";
+      }
+    }
+
+    if (sentinel && "IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        for (var i = 0; i < entries.length; i++) {
+          if (entries[i].isIntersecting) {
+            revealBatch();
+          }
+        }
+      }, { rootMargin: "180px 0px 180px 0px" });
+      io.observe(sentinel);
+    } else {
+      revealBatch();
+    }
+
+    var toggles = document.querySelectorAll(".expand-turn");
+    for (var t = 0; t < toggles.length; t++) {
+      toggles[t].addEventListener("click", function () {
+        var turn = this.closest(".timeline-turn");
+        if (!turn) return;
+        turn.classList.toggle("expanded");
+        this.textContent = turn.classList.contains("expanded") ? "Collapse context" : "Expand context";
+      });
     }
   }
 })();

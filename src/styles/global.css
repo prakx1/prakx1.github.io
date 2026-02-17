@@ -76,12 +76,12 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 14px;
   border: 1px solid var(--line);
-  background: rgba(11, 21, 34, 0.78);
+  background: rgba(10, 18, 29, 0.66);
   backdrop-filter: blur(8px);
-  border-radius: 16px;
-  padding: 12px 14px;
+  border-radius: 12px;
+  padding: 10px 12px;
   position: sticky;
   top: 10px;
   z-index: 50;
@@ -90,7 +90,7 @@ a:hover {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 11px;
+  gap: 8px;
   color: var(--ink);
 }
 
@@ -99,13 +99,13 @@ a:hover {
 }
 
 .brand-mark {
-  width: 12px;
-  height: 12px;
+  width: 8px;
+  height: 8px;
   border-radius: 999px;
   background: var(--accent);
   box-shadow:
-    0 0 0 6px rgba(110, 240, 214, 0.12),
-    0 0 30px rgba(110, 240, 214, 0.42);
+    0 0 0 4px rgba(110, 240, 214, 0.1),
+    0 0 18px rgba(110, 240, 214, 0.35);
   animation: signalPulse 2.2s ease-in-out infinite;
 }
 
@@ -124,64 +124,49 @@ a:hover {
   font-family: var(--display);
   font-weight: 700;
   letter-spacing: 0.01em;
-  font-size: 1.1rem;
+  font-size: 0.98rem;
 }
 
 .brand-copy small {
   display: block;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   font-family: var(--mono);
-  font-size: 0.62rem;
+  font-size: 0.57rem;
 }
 
 .header-stack {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
   justify-content: flex-end;
 }
 
-.status-pill {
-  border: 1px solid rgba(110, 240, 214, 0.45);
-  color: var(--accent);
-  border-radius: 999px;
-  padding: 6px 11px;
-  font-family: var(--mono);
-  font-size: 0.64rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  background: rgba(11, 34, 33, 0.46);
-}
-
 .site-header nav {
   display: inline-flex;
-  gap: 6px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
 .site-header nav a {
-  border: 1px solid transparent;
-  border-radius: 999px;
-  padding: 7px 10px;
+  padding: 2px 0;
   color: var(--muted);
   font-family: var(--mono);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.66rem;
+  letter-spacing: 0.07em;
+  font-size: 0.64rem;
+  border-bottom: 1px solid transparent;
 }
 
 .site-header nav a:hover {
-  border-color: var(--line);
-  color: var(--ink);
+  color: #d9e7ff;
 }
 
 .site-header nav a.active {
-  border-color: rgba(140, 180, 255, 0.5);
-  color: #cde0ff;
-  background: rgba(27, 43, 68, 0.72);
+  color: var(--accent);
+  border-bottom-color: rgba(110, 240, 214, 0.65);
 }
 
 .eyebrow,

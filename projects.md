@@ -4,4 +4,5 @@ title: Projects
 permalink: /projects/
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.
+Selected projects and experiments are listed here.
+Most of my work focuses on backend systems, data-heavy applications, and practical engineering tools.

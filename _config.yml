@@ -1,8 +1,8 @@
-title: NotePad
-description: My writings.
+title: Notebook
+description: Notes on backend engineering, systems design, and things I am learning in public.
 author: Prakash Singh
 github: https://github.com/prakx1
-about: Software Engineer
+about: Software Engineer. Writing to think better.
 disqus_shortname: prakx1
 google_analytics: UA-XXXXXXXX-Y
 
@@ -15,14 +15,6 @@ collections:
     permalink: /project/:path/
 
 social:
-    - icon: fa-facebook
-      link: "#"
-    - icon: fa-twitter
-      link: "#"
-    - icon: fa-linkedin
-      link: "#"
-    - icon: fa-stack-exchange
-      link: "#"
     - icon: fa-github
       link: "https://github.com/prakx1"
 

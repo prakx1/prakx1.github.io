@@ -1,17 +1,33 @@
 :root {
-  --bg: #f7f7f5;
+  --bg: #f5f5f4;
   --surface: #ffffff;
-  --ink: #2f3437;
-  --muted: #6b7280;
-  --line: #e8e8e3;
-  --accent: #4f6f92;
-  --chip: #f3f4f6;
+  --surface-soft: #f9fafb;
+  --text: #1f2937;
+  --text-soft: #6b7280;
+  --line: #e5e7eb;
+  --accent: #0f766e;
+  --accent-soft: #e6f4f2;
+  --shadow: 0 10px 28px rgba(17, 24, 39, 0.06);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1115;
+    --surface: #161a21;
+    --surface-soft: #1b2028;
+    --text: #e5e7eb;
+    --text-soft: #9ca3af;
+    --line: #2c3440;
+    --accent: #34d399;
+    --accent-soft: #17332d;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  }
 }
 
 body {
   background: var(--bg);
-  color: var(--ink);
-  font-family: "Literata", Georgia, serif;
+  color: var(--text);
+  font-family: "Bitter", Georgia, serif;
   font-size: 17px;
   line-height: 1.75;
 }
@@ -23,23 +39,24 @@ h4,
 strong,
 .sidebar-nav strong,
 .author-name {
-  font-family: "Public Sans", "Segoe UI", sans-serif;
-  color: #252a2d;
+  color: var(--text);
+  font-family: "Work Sans", "Segoe UI", sans-serif;
+  letter-spacing: -0.01em;
 }
 
 h1 {
-  font-size: 1.9rem;
-  line-height: 1.25;
-  margin: 0 0 0.6rem;
+  font-size: 2rem;
+  line-height: 1.2;
+  margin: 0 0 0.65rem;
 }
 
 h2 {
-  font-size: 1.2rem;
-  margin: 2.1rem 0 1rem;
+  font-size: 1.16rem;
+  margin: 2rem 0 0.9rem;
 }
 
 h3 {
-  font-size: 1.04rem;
+  font-size: 1.02rem;
   margin: 0 0 0.5rem;
 }
 
@@ -57,26 +74,26 @@ a:hover {
 hr {
   border: 0;
   border-top: 1px solid var(--line);
-  margin: 20px 0;
+  margin: 18px 0;
 }
 
 .main-layout {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 30px 28px 16px;
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 30px 28px 14px;
 }
 
 div.col-sm-3 {
-  margin-top: 58px;
+  color: var(--text-soft);
   font-size: 13px;
-  color: var(--muted);
+  margin-top: 56px;
 }
 
 div.col-sm-3 div.profile-about {
+  color: var(--text-soft);
   margin-top: 8px;
-  color: var(--muted);
 }
 
 .author-name {
@@ -84,7 +101,7 @@ div.col-sm-3 div.profile-about {
 }
 
 .author-name a {
-  color: #252a2d;
+  color: var(--text);
 }
 
 .sidebar-nav {
@@ -99,7 +116,6 @@ div.col-sm-3 div.profile-about {
 
 .sidebar-nav li::before {
   content: "";
-  margin-right: 0;
 }
 
 .social {
@@ -118,45 +134,45 @@ div.col-sm-3 div.profile-about {
 }
 
 .social li a {
+  color: var(--text-soft);
   font-size: 16px;
-  color: var(--muted);
 }
 
 .social li a:hover {
-  color: #3f4750;
+  color: var(--text);
 }
 
 .home-intro {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .kicker {
-  margin: 0 0 10px;
-  color: var(--muted);
-  font-family: "Public Sans", "Segoe UI", sans-serif;
-  font-size: 0.78rem;
-  letter-spacing: 0.06em;
+  color: var(--text-soft);
+  font-family: "Work Sans", "Segoe UI", sans-serif;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  margin: 0 0 8px;
   text-transform: uppercase;
 }
 
 .intro-copy {
-  max-width: 52ch;
   margin: 0 0 12px;
+  max-width: 50ch;
 }
 
 .intro-links {
   display: flex;
-  gap: 8px;
   flex-wrap: wrap;
+  gap: 8px;
 }
 
 .intro-link {
-  background: var(--chip);
+  background: var(--accent-soft);
   border: 1px solid var(--line);
-  border-radius: 6px;
-  color: #39424d;
-  font-family: "Public Sans", "Segoe UI", sans-serif;
-  font-size: 0.8rem;
+  border-radius: 8px;
+  color: var(--text);
+  font-family: "Work Sans", "Segoe UI", sans-serif;
+  font-size: 0.79rem;
   padding: 4px 9px;
 }
 
@@ -166,22 +182,22 @@ div.col-sm-3 div.profile-about {
 }
 
 .post-card {
-  background: #fcfcfb;
+  background: var(--surface-soft);
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 12px 14px;
 }
 
 .post-card p {
+  color: var(--text-soft);
   margin: 0;
-  color: var(--muted);
 }
 
 .post-card .post-meta {
-  color: #7c828e;
-  font-family: "Public Sans", "Segoe UI", sans-serif;
+  color: var(--text-soft);
+  font-family: "Work Sans", "Segoe UI", sans-serif;
   font-size: 0.74rem;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   margin-bottom: 7px;
   text-transform: uppercase;
 }
@@ -195,8 +211,8 @@ div.col-sm-3 div.profile-about {
 }
 
 .posts li span {
-  color: var(--muted);
-  font-family: "Public Sans", "Segoe UI", sans-serif;
+  color: var(--text-soft);
+  font-family: "Work Sans", "Segoe UI", sans-serif;
   font-size: 0.77rem;
   margin-left: 8px;
 }
@@ -216,21 +232,21 @@ div.col-sm-3 div.profile-about {
 
 span.time,
 span.categories {
-  color: var(--muted);
-  font-family: "Public Sans", "Segoe UI", sans-serif;
+  color: var(--text-soft);
+  font-family: "Work Sans", "Segoe UI", sans-serif;
   font-size: 0.74rem;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
 .post-meta-row .categories a {
-  background: var(--chip);
+  background: var(--accent-soft);
   border: 1px solid var(--line);
-  border-radius: 6px;
-  color: #4b5563;
+  border-radius: 7px;
+  color: var(--text);
   font-size: 0.7rem;
   margin-right: 4px;
-  padding: 2px 6px;
+  padding: 2px 7px;
 }
 
 .post {
@@ -243,12 +259,12 @@ span.categories {
 }
 
 div.content pre {
-  background: #f5f6f8;
-  border: 1px solid #e4e7ec;
-  border-radius: 8px;
-  color: #253041;
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--text);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 0.86rem;
+  font-size: 0.85rem;
   overflow-x: auto;
   padding: 12px;
 }
@@ -259,7 +275,7 @@ div.content pre {
   border-top: 1px solid var(--line);
   display: flex;
   flex-wrap: wrap;
-  font-family: "Public Sans", "Segoe UI", sans-serif;
+  font-family: "Work Sans", "Segoe UI", sans-serif;
   font-size: 0.78rem;
   gap: 10px;
   margin-top: 24px;
@@ -267,21 +283,21 @@ div.content pre {
 }
 
 .share-page span {
-  color: var(--muted);
+  color: var(--text-soft);
 }
 
 .related-panel {
-  background: #fcfcfb;
+  background: var(--surface-soft);
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 10px;
   margin-top: 24px;
   padding: 12px;
 }
 
 .related-panel h4 {
-  font-family: "Public Sans", "Segoe UI", sans-serif;
-  font-size: 0.88rem;
-  letter-spacing: 0.04em;
+  font-family: "Work Sans", "Segoe UI", sans-serif;
+  font-size: 0.86rem;
+  letter-spacing: 0.05em;
   margin: 0 0 8px;
   text-transform: uppercase;
 }
@@ -297,7 +313,7 @@ div.content pre {
 
 .PageNavigation {
   display: block;
-  font-family: "Public Sans", "Segoe UI", sans-serif;
+  font-family: "Work Sans", "Segoe UI", sans-serif;
   font-size: 14px;
   overflow: hidden;
   width: auto;
@@ -320,14 +336,14 @@ div.content pre {
 
 .post-content img,
 .content img {
-  border-radius: 8px;
+  border-radius: 10px;
   max-width: 100%;
 }
 
 footer {
   border-top: 1px solid var(--line);
-  color: var(--muted);
-  font-family: "Public Sans", "Segoe UI", sans-serif;
+  color: var(--text-soft);
+  font-family: "Work Sans", "Segoe UI", sans-serif;
   font-size: 12px;
   margin-bottom: 2em;
   margin-top: 16px;
@@ -351,7 +367,7 @@ footer {
   }
 
   .main-layout {
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 22px 16px 12px;
   }
 }
